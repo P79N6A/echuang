@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1" />
+    <title>我的金豆>转赠</title>
+    <link rel="stylesheet" type="text/css" href="../../css/member_system/base.css">
+    <link rel="stylesheet" type="text/css" href="../../css/member_system/nctouch_member.css">
+    <link rel="stylesheet" type="text/css" href="../../css/member_system/bean.css">
+</head>
+
+<body id="body">
+    <header id="header">
+        <div class="header-wrap">
+            <div class="header-l"><a href="gold_bean.html"><i class="back"></i></a></div>
+            <div class="header-title">
+                <h1>转赠金豆</h1>
+            </div>
+        </div>
+    </header>
+    <div class="bean">
+        <div class="bean-content">
+            <form action="" method="">
+                <ul class="form-box">
+                    <li>
+                        <img src="../../images/member_system/bean/gold_donate.png">
+                    </li>
+                    <li class="form-item">
+                        <p>接收人手机号:</p>
+                        <div class="input-box">
+                            <input type="text" placeholder="请输入接收人手机号" class="txt" name="to_mobile" id="to_mobile" oninput="writeClear($(this));" />
+                        </div>
+                    </li>
+                    <li class="form-item">
+                        <p>转赠数量:</p>
+                        <div class="input-box">
+                            <input type="text" placeholder="请输入转赠数量" class="txt" name="amount" id="amount" oninput="writeClear($(this));" />
+                        </div>
+                    </li>
+                    <li class="form-item">
+                        <p class="bean-p">支付密码</p>
+                        <div class="input-box">
+                            <input type="password" placeholder="请输入登录密码" class="txt" name="passwd" id="passwd" oninput="writeClear($(this));">
+                        </div>
+                    </li>
+                </ul>
+                <div class="error-tips"></div>
+                <div class="form-btn">
+                    <a href="javascript:void(0);" class="btn" id="donatebtn">提交</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../js/config.js"></script>
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/tmpl/member_system/gold_donate.js"></script>
+</body>
+
+</html>

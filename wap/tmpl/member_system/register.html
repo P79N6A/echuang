@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1" />
+    <title>会员注册</title>
+    <link rel="stylesheet" type="text/css" href="../../css/member_system/base.css">
+    <link rel="stylesheet" type="text/css" href="../../css/member_system/nctouch_member.css">
+</head>
+
+<body id="body">
+    <header id="header">
+        <div class="header-wrap">
+            <div class="header-l"><a href="javascript:history.go(-1)"><i class="back"></i></a></div>
+            <div class="header-title">
+                <h1>会员注册</h1>
+            </div>
+        </div>
+    </header>
+    <div class="scroller-body" id="scroller-body">
+        <div class="scroller-box">
+            <div id="pointscount" class="nctouch-asset-info" style="margin-top: 44px">
+                <div class="nctouch-inp-con">
+                    <form action="" method="">
+                        <ul class="form-box">
+                            <li class="form-item">
+                                <h4>姓&nbsp;名</h4>
+                                <div class="input-box">
+                                    <input type="text" placeholder="请输入姓名" class="inp" name="username" id="username" oninput="writeClear($(this));">
+                                    <span class="input-del"></span>
+                                </div>
+                            </li>
+                            <li class="form-item">
+                                <h4>手&nbsp;机&nbsp;号</h4>
+                                <div class="input-box">
+                                    <input type="text" placeholder="请输入手机号" class="inp" name="mobile" id="mobile" pattern="[0-9]*" />
+                                    <span class="input-del"></span>
+                                    <span class="code-countdown" style="display:none;">
+                                        <p>(等待<em>59</em>秒后)</p>
+                                        <!--<p>重新获取验证码</p>-->
+                                    </span>
+                                    <span class="code-again"><a id="send" href="javascript: void(0);">获取短信验证</a></span>
+                                </div>
+                            </li>
+                            <li class="form-item">
+                                <h4>验证码</h4>
+                                <div class="input-box">
+                                    <input type="text" placeholder="请输入验证码" class="inp" name="captcha" id="captcha" oninput="writeClear($(this));">
+                                    <span class="input-del"></span>
+                                </div>
+                            </li>
+                            <li class="form-item">
+                                <h4>设置密码</h4>
+                                <div class="input-box">
+                                    <input type="password" placeholder="请输入登录密码" class="inp" name="passwd" id="passwd" oninput="writeClear($(this));">
+                                    <span class="input-del"></span>
+                                </div>
+                            </li>
+                            <!--<li class="form-item">-->
+                                <!--<h4>支付密码</h4>-->
+                                <!--<div class="input-box">-->
+                                    <!--<input type="password" placeholder="请输入支付密码" class="inp" name="paypasswd" id="paypasswd" oninput="writeClear($(this));">-->
+                                    <!--<span class="input-del"></span>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <li class="form-item">
+                                <h4>推荐人</h4>
+                                <div class="input-box">
+                                    <input type="text" placeholder="请填写推荐人手机号" class="inp" name="invite" id="invite" oninput="writeClear($(this));">
+                                    <span class="input-del"></span>
+                                </div>
+                            </li>
+                            <!--<li class="form-item">-->
+                                <!--<h4>共享资源</h4>-->
+                                <!--<div class="input-box">-->
+                                    <!--<input type="text" placeholder="请填写共享资源手机号" class="inp" name="access" id="access" oninput="writeClear($(this));">-->
+                                    <!--<span class="input-del"></span>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--<li class="form-item">-->
+                                <!--<h4>银行账户</h4>-->
+                                <!--<div class="input-box">-->
+                                    <!--<input type="text" placeholder="请填写银行账户" class="inp" name="bank_account_name" id="bank_account_name" />-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--<li class="form-item">-->
+                                <!--<h4>银行名称</h4>-->
+                                <!--<div class="input-box">-->
+                                    <!--<select name="bank_name" id="bank_name"></select>-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--<li class="form-item">-->
+                                <!--<h4>支行名称</h4>-->
+                                <!--<div class="input-box">-->
+                                    <!--<input type="text" placeholder="请填写支行名称" class="inp" name="bank_branch_name" id="bank_branch_name" />-->
+                                <!--</div>-->
+                            <!--</li>-->
+                            <!--<li class="form-item">-->
+                                <!--<h4>银行卡号</h4>-->
+                                <!--<div class="input-box">-->
+                                    <!--<input type="text" placeholder="请填写银行卡号" class="inp" name="bank_account_num" id="bank_account_num" />-->
+                                <!--</div>-->
+                            <!--</li>-->
+
+                            <!-- <li class="form-item">
+                                <h4>区域</h4>
+                                <div class="input-box">
+                                    <select name="area" id="area">
+                                        <option value="">-请选择-</option>
+                                        <option value="1">左</option>
+                                        <option value="2">右</option>
+                                    </select>
+                                </div>
+                            </li> -->
+
+                        </ul>
+                        <div class="error-tips"></div>
+                        <div class="form-btn">
+                            <a href="javascript:void(0);" class="btn" id="registerbtn">注册</a>
+                        </div>
+                    </form>
+                    <input type="hidden" name="referurl">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    var navigate_id = "5";
+    </script>
+    <script type="text/javascript" src="../../js/config.js"></script>
+    <script type="text/javascript" src="../../js/zepto.min.js"></script>
+    <script type="text/javascript" src="../../js/common.js"></script>
+    <script type="text/javascript" src="../../js/simple-plugin.js"></script>
+    <script type="text/javascript" src="../../js/tmpl/footer.js"></script>
+    <script type="text/javascript" src="../../js/base64/base64.js"></script>
+    <script type="text/javascript" src="../../js/tmpl/member_system/register.js"></script>
+</body>
+
+</html>

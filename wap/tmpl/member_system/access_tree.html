@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="initial-scale=0.9,maximum-scale=0.9,minimum-scale=0.9" />
+    <title>资源图</title>
+    <link rel="stylesheet" type="text/css" href="../../css/member_system/base.css">
+    <link rel="stylesheet" type="text/css" href="../../css/member_system/nctouch_member.css">
+    <link rel="stylesheet" type="text/css" href="../../css/tree/tree.css">
+</head>
+
+<body id="body">
+    <header id="header" style="background-color: #FFF;border-bottom: solid 0.05rem #EAEAEA !important;">
+        <div class="header-wrap">
+            <div class="header-l"><a href="center.html" id="back"><i class="back"></i></a></div>
+            <div class="header-title">
+                <h1 style="color: #000;">资源图</h1>
+            </div>
+        </div>
+    </header>
+    <div class="performance" style="margin-top: 46px;">
+        <ul style="background-color: #FFF; width: 100%;color: #404954;font-size:16px;">
+            <li style="height: 2rem; border: solid 0.05rem #EAEAEA;">
+                <span style="width: 30%; display: inline-block; margin: 0.8rem 0; text-align: center;">总业绩</span>
+                <span id="left_total_performance" style="width: 30%;display: inline-block;">0.00</span>
+                <span style="width: 10%;display: inline-block;">:</span>
+                <span id="right_total_performance" style="width: 30%;">0.00</span>
+            </li>
+            <li style="height: 2rem;border: solid 0.05rem #EAEAEA;">
+                <span style="width: 30%;display: inline-block;margin: 0.8rem 0;text-align: center;">剩  余</span>
+                <span id="left_surplus_performance" style="width: 30%;display: inline-block;">0.00</span>
+                <span style="width: 10%;display: inline-block;">:</span>
+                <span id="right_surplus_performance" style="width: 30%;">0.00</span>
+            </li>
+        </ul>
+    </div>
+    <div class="tree">
+    </div>
+</body>
+<script type="text/javascript" src="../../js/config.js"></script>
+<script type="text/javascript" src="../../js/zepto.min.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/tmpl/member_system/access_tree.js"></script>
+
+</html>

@@ -1,0 +1,98 @@
+.bean {
+    margin-top: 0;
+    margin-left: 0;
+    position: absolute;
+    z-index: auto;
+    width: 100%;
+}
+
+.bean-content {
+    display: block;
+    margin: 1.5rem 0.8rem;
+}
+
+.bean-content li {
+    margin: 0.6rem;
+    padding: 0.1rem;
+}
+
+.bean-content li img {
+    font-family: "微软雅黑";
+    margin: 1rem 0;
+    /*width: 4rem;
+    height: 4rem;*/
+    width: 100%;
+}
+
+
+.bean-content li p {
+    font-size: 0.9rem;
+    line-height: 0.95rem;
+    color: #545354;
+    margin-bottom: 0.3rem;
+    margin-left: 0.3rem;
+}
+
+.bean-content li input {
+    background: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 1.5rem;
+    font-size: 0.8rem;
+    line-height: 0.9rem;
+    text-align: left;
+    border: 1px #646364 solid;
+    border-radius: 0.2rem;
+    text-indent:0.3rem;
+}
+
+.bean-content li input:focus {
+	border: 2px #ddd solid;
+	box-shadow: 0 0 5px 1px #55BBA1;
+}
+
+.bean-content li select {
+    background: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 1.6rem;
+    font-size: 0.8rem;
+    line-height: 0.9rem;
+    border: 1px #747374 solid;
+    border-radius: 0.2rem;
+    padding-left: 0.2rem;
+    text-align: center;
+}
+
+.bean-content li select option {
+    background: #A6E1EC;
+    line-height: 0.9rem;
+}
+
+.bean-content li select:focus {
+    border: 2px #ddd solid;
+    box-shadow: 0 0 5px 1px #55BBA1;
+}
+
+.bean-content li select option:hover {
+    background: #EBCCD1;
+}
+    
+.bean-content .form-btn { margin-top: 1.5rem; padding-bottom:2.2rem}
+.bean-content .form-btn .btn { display: inline-block; width: 90%; height: 1.8rem; padding: 0; margin: 0 5%; font-size: 0.8rem; line-height: 1.8rem; text-align: center; color: #FFFFFF; background: #E1E2E5; border: none; border-radius: 0.2rem; }
+.bean-content .form-btn.ok .btn { color: #FFF !important; background: #55BBA1;}
+
+.bean-content .form-btn {
+	padding: 0.1rem;
+	
+}
+
+.bean-content .form-btn .btn {
+	text-align: center;
+	font-size: 16px;
+    margin-top: 20px;
+    /*width: 100%;*/
+    height: 1.6rem;
+    background-color: #ee96be;
+    border: 1px;
+    border-radius: 6px;
+    color: #FFFFFF
+}

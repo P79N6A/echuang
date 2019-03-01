@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-touch-fullscreen" content="yes" />
+<meta name="format-detection" content="telephone=no"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="msapplication-tap-highlight" content="no" />
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1" />
+<title>预存款提现</title>
+<link rel="stylesheet" type="text/css" href="../../css/base.css">
+<link rel="stylesheet" type="text/css" href="../../css/nctouch_member.css">
+<style>
+.input-30, .input-40 {
+	vertical-align: middle;
+	font-size: 14px;
+	-webkit-appearance: none;
+	text-indent: 10px;
+	width: 100%;
+	border:1px #ccc solid;
+}
+.input-30 {
+	height: 30px; line-height: 30px\9;
+}
+.login-form {padding: 35px 10px 10px; background:#fff; font-size:14px;}
+.login-form h3 { display: block; margin: 15px 0; text-align:right; padding:10px 30px; height:50px; line-height:24px; background:#ED5564; font-size:14px; color:#fff; font-weight:600}
+.login-form h3 em{ font-size:24px; font-weight:600}
+.login-form p { display: block; margin:5px 0 15px; font-size:12px; color:#aaa; padding-left:70px; line-height:20px}
+.login-form p em{ color:#F00;}
+.login-form span { display: block; margin-top: 5px; }
+.login-form span em{ color:#333; font-size:16px;}
+.mt10 {
+    margin-top: 10px;
+}
+.l-btn-login {
+	height: 40px;
+	line-height: 40px;
+	color: #fff;
+	background: #FF5E00;
+	width: 100%;
+	display: block;
+	text-align: center;
+	border-radius: 3px;
+}
+</style>
+</head>
+<body>
+  <header id="header" class="fixed">
+  <div class="header-wrap">
+    <div class="header-l"><a href="pdcashlist.html"><i class="back"></i></a></div>
+    <div class="header-title">
+      <h1>预存款提现</h1>
+    </div>
+    <div class="header-r"> <a id="header-nav" href="javascript:void(0);"><i class="more"></i><sup></sup></a> </div>
+  </div>
+  <div class="nctouch-nav-layout">
+    <div class="nctouch-nav-menu"> <span class="arrow"></span>
+      <ul>
+        <li><a href="../../index.html"><i class="home"></i>首页</a></li>
+        <li><a href="../search.html"><i class="search"></i>搜索</a></li>
+        <li><a href="../product_first_categroy.html"><i class="categroy"></i>分类</a></li>
+        <li><a href="javascript:void(0);"><i class="message"></i>消息<sup></sup></a></li>
+        <li><a href="../cart_list.html"><i class="cart"></i>购物车<sup></sup></a></li>
+        <li><a href="../member/member.html"><i class="member"></i>我的商城</a></li>
+      </ul>
+    </div>
+  </div>
+</header>
+    <div class="login-form">
+        <form action="" method ="">
+		 <h3>
+         可用余额<br>￥<em id="allmoney">0</em> 元</h3> 
+            <span>
+                提现金额：<input type="text" style="width:60%;" class="input-30" name="pdc_amount" id="pdc_amount"/> 元
+            </span>        
+            <p><em>*</em>在这里填写您想要提现的金额，请不要超过可用余额，否则提现失败</p>    
+          <span>
+                收款方式：<input type="text" style="width:60%;" class="input-30" name="pdc_bank_name" id="pdc_bank_name"/>
+            </span>   
+            <p><em>*</em>您方便的提现方式，可以是银行卡、支付宝、微信，若为银行卡则填写银行名称</p>  
+			 <span>
+                收款账号：<input type="text" style="width:60%;" class="input-30" name="pdc_bank_no" id="pdc_bank_no"/>
+            </span>   
+            <p><em>*</em>填写您选择提现方式的账号，银行卡号、支付宝、微信号等</p>  
+			 <span>
+                收&nbsp;&nbsp;款&nbsp;&nbsp;人：<input type="text" style="width:60%;" class="input-30" name="pdc_bank_user" id="pdc_bank_user"/>
+            </span>
+            <p><em>*</em>请如实填写您的收款人姓名，否则将会影响到收款</p> 
+			<span>
+                手机号码：<input type="text" style="width:60%;" class="input-30" name="mobilenum" id="mobilenum"/>
+            </span>   
+            <p><em>*</em>手机号码方便联系您</p>  
+            			
+			 <span>
+                支付密码：<input type="password" style="width:60%;" class="input-30" name="password" id="password"/>
+            </span>   
+            <p><em>*</em>验证您的身份，我们将在2个工作日内将提现金额转至您的提现账号中</p>  
+            <div class="error-tips mt10"></div>
+            <a href="javascript:void(0);" class="l-btn-login mt10" id="loginbtn">
+                提交
+            </a>
+        </form>
+    </div>
+<footer id="footer" class="bottom"></footer>
+<script> var navigate_id ="5";</script> 
+<script type="text/javascript" src="../../js/config.js"></script> 
+<script type="text/javascript" src="../../js/zepto.min.js"></script> 
+<script type="text/javascript" src="../../js/template.js"></script> 
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/zepto.waypoints.js"></script>
+<script type="text/javascript" src="../../js/ncscroll-load.js"></script> 
+    <input type="hidden" name="referurl">
+ 
+    <script type="text/javascript" src="../../js/simple-plugin.js"></script>
+    <script type="text/javascript" src="../../js/tmpl/pd_cash.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-touch-fullscreen" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1" />
+    <title>系统设置</title>
+    <link rel="stylesheet" type="text/css" href="../../css/base.css">
+    <link rel="stylesheet" type="text/css" href="../../css/nctouch_member.css">
+</head>
+
+<body>
+<header id="header" class="fixed">
+    <div class="header-wrap">
+        <div class="header-l">
+            <a href="my_team.html">
+                <i class="back"></i>
+            </a>
+        </div>
+        <div class="header-title">
+            <h1>我的团队明细</h1>
+        </div>
+    </div>
+</header>
+<div class="scroller-body">
+    <div id="body_title" class="body_title" style="background: #fff;position: fixed; top: 2rem; display: block; width: 100%; color: #333; line-height: 1.8rem; font-size: 0.7rem; padding-left: 0.2rem; border-bottom: solid 0.06rem #EEE;">
+        业绩总额：<span id="title_num" style="color: red"></span>
+    </div>
+
+    <div id="wp" class="scroller-box"  style="margin-top: 4.5rem">
+    </div>
+</div>
+<script id="tpl" type="text/html">
+    <% for (var i in profit_reward_list) { %>
+    <div style="width: 95%; margin: 0.5rem auto 0;  border-radius: 0.4rem; background: #fff; border:0.06rem solid #eee">
+        <div style="padding: 0.21rem 0.4rem;">
+            <p style="font-size: 0.6rem; line-height: 1.2rem; color: #999">订单编号： <span><%=profit_reward_list[i].order_sn%></span></p>
+            <p style="font-size: 0.6rem; line-height: 1.2rem;color: #999">下单昵称： <span><%=profit_reward_list[i].buyer_name%></span></p>
+            <p style="font-size: 0.6rem; line-height: 1.2rem;color: #999">结算时间： <span><%=profit_reward_list[i].payment_time%></span></p>
+            <p style="font-size: 0.6rem; line-height: 1.2rem;color: #999">订单金额： <span style="color: red">￥ <%=profit_reward_list[i].order_amount%></span></p>
+            <p style="font-size: 0.6rem; line-height: 1.2rem;color: #999">redbag基金： <span style="color: red">￥ <%=profit_reward_list[i].prize%></span></p>
+            <p style="font-size: 0.6rem; line-height: 1.2rem;color: #999">确认状态： <span><%=profit_reward_list[i].order_state%></span></p>
+        </div>
+    </div>
+    <% } %>
+</script>
+<script>
+    var navigate_id = "4";
+</script>
+<script type="text/javascript" src="../../js/zepto.min.js"></script>
+<script type="text/javascript" src="../../js/config.js"></script>
+<script type="text/javascript" src="../../js/template.js"></script>
+<script type="text/javascript" src="../../js/common.js"></script>
+<script type="text/javascript" src="../../js/simple-plugin.js"></script>
+<script type="text/javascript" src="../../js/tmpl/member_system/my_team2_in3.js"></script>
+
+</body>
+
+</html>
