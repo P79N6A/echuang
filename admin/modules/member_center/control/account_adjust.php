@@ -34,8 +34,8 @@ class account_adjustControl extends SystemControl {
             $validate = new Validate();
             $validate->validateparam = array(
                 array('input' => $_POST['member_mobile'], 'require' => "true", 'message' => "请输入会员手机号"),
-                array('input' => $_POST['adjust_amount'], 'require' => "true", 'message' => "请输入调整金额"),
-                array('input' => $_POST['adjust_amount'], 'validator' => "double", 'message' => "调整金额须为数字"),
+                array('input' => $_POST['adjust_amount'], 'require' => "true", 'message' => "请输入调整数量"),
+                array('input' => $_POST['adjust_amount'], 'validator' => "double", 'message' => "调整数量须为数字"),
             );
             $error = $validate->validate();
             if ($error != '') {

@@ -28,48 +28,26 @@ class member_system_editControl extends SystemControl
     }
 
     public function income_settingOp() {
-        $model_level = Model('level');
         $model_setting = Model('setting');
         if (chksubmit()) {
             $data = array();
-            $data['vip_commission'] = floatval(trim($_POST['vip_commission']));
-            $data['shopkeeper_commission'] = floatval(trim($_POST['shopkeeper_commission']));
-            $data['partner_commission'] = floatval(trim($_POST['partner_commission']));
-            $data['senior_partner_commission'] = floatval(trim($_POST['senior_partner_commission']));
-            $data['vip_ratio'] = floatval(trim($_POST['vip_ratio']));
-            $data['shopkeeper_ratio'] = floatval(trim($_POST['shopkeeper_ratio']));
-            $data['partner_ratio'] = floatval(trim($_POST['partner_ratio']));
-            $data['senior_partner_ratio'] = floatval(trim($_POST['senior_partner_ratio']));
-            $data['shopkeeper_direct_prize'] = floatval(trim($_POST['shopkeeper_direct_prize']));
-            $data['partner_direct_prize'] = floatval(trim($_POST['partner_direct_prize']));
-            $data['senior_partner_direct_prize'] = floatval(trim($_POST['senior_partner_direct_prize']));
-            $data1['senior_partner_commission_v1'] = floatval($_POST['senior_partner_commission_v1']);
-            $data1['senior_partner_commission_v2'] = floatval(trim($_POST['senior_partner_commission_v2']));
-            $data1['senior_partner_commission_v3'] = floatval(trim($_POST['senior_partner_commission_v3']));
-            $data2['withdraw_poundage'] = floatval(trim($_POST['withdraw_poundage']));
-            $data2['withdraw_limit'] = floatval(trim($_POST['withdraw_limit']));
-            $data2['equity_start_buy_limit'] = floatval(trim($_POST['equity_start_buy_limit']));
-            $data2['equity_add_buy_limit'] = floatval(trim($_POST['equity_add_buy_limit']));
-            $data2['equity_exchange_ratio'] = trim($_POST['equity_exchange_ratio']);
-
-            $result1 = $model_setting->updateSetting1($data);
-            $result2 = $model_setting->updateSetting2($data1);
-            $result3 = $model_setting->updateSetting3($data2);
-            if ($result1 && $result2 && $result3) {
+            $data['f_estimate_integral'] = intval(trim($_POST['f_estimate_integral']));
+            $data['f_reward_integral'] = intval(trim($_POST['f_reward_integral']));
+            $data['f_deduction_integral'] = intval(trim($_POST['f_deduction_integral']));
+            $data['f_superior_deduction_integral'] = intval(trim($_POST['f_superior_deduction_integral']));
+            $data['f_service_charge'] = intval(trim($_POST['f_service_charge']));
+            $data['f_vip_service_charge'] = intval(trim($_POST['f_vip_service_charge']));
+            $result = $model_setting->updateSetting($data);
+            if ($result) {
                 manualDelCacheFile('setting');
                 showMessage('参数设置成功', '', '', 'succ');
             } else {
                 showMessage('参数设置失败', '', '', 'error');
             }
         }
-        Tpl::output('top_link', $this->sublink($this->links, 'income_setting'));
-//        $setting_list = $model_setting->getListSetting();
-        $setting_list = $model_level->getMemberSettingList();
         $same_senior_partner_commission = $model_setting->getListSetting();
-        $member_system_setting = $model_level->getMemberSystemSetting();
-        Tpl::output('s_info', $setting_list);
+        Tpl::output('s_info', $same_senior_partner_commission);
         Tpl::output('other_setting', $same_senior_partner_commission);
-        Tpl::output('member_system_setting', $member_system_setting);
         Tpl::setDirquna('member_center');
         Tpl::showpage('income_setting.index');
     }

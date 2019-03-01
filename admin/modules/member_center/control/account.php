@@ -27,24 +27,10 @@ class accountControl extends SystemControl {
      */
     public function account_manageOp()
     {
-        $total_bean = 0;
-        $total_equity = 0;
-        $total_consume = 0;
-        $model_member_extend = Model('member_extend');
-        $availInfo1 = $model_member_extend->getAllMemberExtendAvail();
-        $availInfo2 = $model_member_extend->getAllMemberAvail();
-//        var_dump($availInfo1,$availInfo2);die();
-        $total_set_meal_amount = $availInfo1[0]['set_meal_amount'];
-        $total_bonus = $availInfo2[0]['bonus'];
-        $total_balance = $availInfo2[0]['balance'];
-        $total_equity = $availInfo1[0]['member_equity'];
-        $total_consume = $availInfo1[0]['total_consume'];
+        $integral_total = Model('declaration_form')->getIntegralTotal();
 
-        Tpl::output('total_bonus', floatFormat($total_bonus));
-        Tpl::output('total_balance', floatFormat($total_balance));
-        Tpl::output('total_equity', floatFormat($total_equity));
-        Tpl::output('total_consume', floatFormat($total_consume));
-        Tpl::output('total_set_meal_amount', floatFormat($total_set_meal_amount));
+        Tpl::output('integral_total', floatFormat($integral_total['integral_total']));
+        Tpl::output('estimate_integral_total', floatFormat($integral_total['estimate_integral_total']));
         $getGoldNumType1=Model('member_extend')->getGoldNumType1();
         $getGoldNumType2=Model('member_extend')->getGoldNumType2();
 		Tpl::output('total_golden_coupon', floatFormat($getGoldNumType1[0]['min_count']+$getGoldNumType2[0]['max_count']*10));
@@ -151,7 +137,8 @@ class accountControl extends SystemControl {
             $fields = 'member_id,member_name,balance,member_equity,member_golden_bean_payed,member_golden_bean_freeze,member_silver_bean,member_silver_bean_payed';
             $info = $model_member_extend->getMemberExtendInfo(array('member_mobile' => $member_mobile), $fields, 'union');
             if (!empty($info)) {
-				echo json_encode(array('id' => $info['member_id'], 'name' => $info['member_name'], 'balance' => $info['balance'], 'equity' => $info['member_equity'], ));
+                $integral_total = Model('declaration_form')->getIntegralTotal(2,$info['member_id']);
+				echo json_encode(array('id' => $info['member_id'], 'name' => $info['member_name'], 'balance' => $integral_total['m_integral'], 'equity' => $integral_total['estimate_integral'], ));
             } else {
                 echo "";
             }
@@ -167,47 +154,34 @@ class accountControl extends SystemControl {
      */
     public function get_xmlOp()
     {
-        $model_member_extend = Model('member_extend');
+        $model_declaration_form = Model('declaration_form');
         $condition = array();
         if ($_POST['query'] != '') {
             $condition[$_POST['qtype']] = array('like', '%' . $_POST['query'] . '%');
         }
 
-        $order = '';
-        $order_member_extend = '';
-
-        $param_member = array('member_id', 'member_name', 'member_mobile', 'member_time', 'member_login_time');
-        $param_member_extend = array('member_golden_bean', 'member_golden_bean_payed', 'member_equity', 'total_performance', 'new_performance', 'surplus_performance', 'day_total_consume', 'total_consume', 'depth');
-        if (in_array($_POST['sortname'], $param_member) && in_array($_POST['sortorder'], array('asc', 'desc'))) {
-            $order = 'member.' . $_POST['sortname'] . ' ' . $_POST['sortorder'];
-        } elseif (in_array($_POST['sortname'], $param_member_extend) && in_array($_POST['sortorder'], array('asc', 'desc'))) {
-            $order = 'member_extend.' . $_POST['sortname'] . ' ' . $_POST['sortorder'];
-        }
-
         $page = $_POST['rp'];
-        $fields = 'member_id,member_mobile,member_name,balance,bonus,member_equity,set_meal_amount,total_consume';
-        $member_list = $model_member_extend->getMemberExtendList($condition, $fields, 'union', $page, $order);
+        $fields = 'member.member_id,member_mobile,member_name,member.integral,estimate_integral';
+
+        $member_list = $model_declaration_form->getMemberDeclarationList($condition, $fields, $page);
         $data = array();
-        $data['now_page'] = $model_member_extend->shownowpage();
-        $data['total_num'] = $model_member_extend->gettotalnum();
+        $data['now_page'] = $model_declaration_form->shownowpage();
+        $data['total_num'] = $model_declaration_form->gettotalnum();
 
         foreach ($member_list as $v) {
             //以下变量不要随意改动顺序
+            $times = $model_declaration_form->getOutgoTimes($v['member_id']);
             $param = array();
             $operation = "----";
-//            $operation = "<a class='btn blue' href='index.php?act=account&op=account_adjust&member_id=" . $v['member_id'] . "'><i class='fa fa-pencil-square-o'></i>编辑</a>";
             $param['operation'] = $operation;
             $param['member_mobile'] = $v['member_mobile'];
             $param['member_name'] = $v['member_name'];
-            $param['balance'] = $v['balance'];
-//            $total_bean += $availBean;
-            $param['bonus'] = $v['bonus'];
-            $param['member_equity'] = $v['member_equity'];
-            $param['set_meal_amount'] = $v['set_meal_amount'];
-            $param['total_consume'] = $v['total_consume'];
+            $param['integral'] = $v['integral'];
+            $param['estimate_integral'] = $v['estimate_integral']?$v['estimate_integral']:0;
+            $param['declaration_times'] = $times['declaration_times'];
+            $param['outgo_times'] = $times['outgo_times'];
             $data['list'][$v['member_id']] = $param;
         }
-//        var_dump($data);die();
         echo Tpl::flexigridXML($data);
         exit();
     }
@@ -219,15 +193,10 @@ class accountControl extends SystemControl {
     public function export_xlsOp()
     {
         import('libraries.excel');
-        $model_member_extend = Model('member_extend');
-        $id = $_GET['id'];
-        if ($id) {
-            $condition['member_id'] = array('in', $id);
-            $data = $model_member_extend->getMemberExtendList($condition, '*', 'union');
+        $model_declaration_form = Model('declaration_form');
+        $condition = array();
+        $data = $model_declaration_form->getMemberDeclarationList($condition);
 
-        } else {
-            $data = $model_member_extend->getAllMemberExtendList();
-        }
 
         $excel_obj = new Excel();
         $excel_data = array();
@@ -236,22 +205,19 @@ class accountControl extends SystemControl {
         // header
         $excel_data[0][] = array('styleid' => 's_title', 'data' => '会员手机');
         $excel_data[0][] = array('styleid' => 's_title', 'data' => '真实姓名');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '余额');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '分红');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '股权数');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '会员套餐金额');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '消费金额');
-//        $excel_data[0][] = array('styleid' => 's_title', 'data' => "银豆");
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '积分');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '预期积分');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '报单次数');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '出局次数');
         foreach ((array) $data as $k => $v) {
+            $times = $model_declaration_form->getOutgoTimes($v['member_id']);
             $tmp = array();
             $tmp[] = array('data' => $v['member_mobile']);
             $tmp[] = array('data' => $v['member_name']);
-            $tmp[] = array('data' => floatval($v['balance']));
-            $tmp[] = array('data' => floatval($v['bonus']));
-            $tmp[] = array('data' => floatval($v['member_equity']));
-            $tmp[] = array('data' => floatval($v['set_meal_amount']));
-            $tmp[] = array('data' => floatval($v['total_consume']));
-//            $tmp[] = array('data' => floatval($model_member_extend->getAvailSilverBeanById($v['member_id'])));
+            $tmp[] = array('data' => $v['integral']);
+            $tmp[] = array('data' => $v['estimate_integral']);
+            $tmp[] = array('data' => $times['declaration_times']);
+            $tmp[] = array('data' => $times['outgo_times']);
             $excel_data[] = $tmp;
         }
         $excel_data = $excel_obj->charset($excel_data, CHARSET);

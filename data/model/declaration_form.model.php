@@ -23,6 +23,7 @@ define('DECLARATION_STATE_ZERO', 0);
 define('DECLARATION_STATE_ONE', 1);
 define('DECLARATION_STATE_TWO', 2);
 define('DECLARATION_STATE_THREE', 3);
+define('DECLARATION_STATE_FOUR', 4);
 
 class declaration_formModel extends Model {
 
@@ -40,6 +41,7 @@ class declaration_formModel extends Model {
         DECLARATION_STATE_ONE => '已开始',
         DECLARATION_STATE_TWO => '已结束',
         DECLARATION_STATE_THREE => '审核未通过',
+        DECLARATION_STATE_FOUR => '已出局',
     );
 
     public function __construct(){
@@ -157,6 +159,56 @@ class declaration_formModel extends Model {
         $where = ' member_id = \''.$member_id.'\' and integral_end_time > \''.time().'\' and state = 0 ';
         $data =  $this->table('member_declaration')->where($where)->find();
 
+        return $data;
+    }
+
+    /**
+     * 获取会员列表
+     * @return array
+     */
+    public function getMemberDeclarationList($condition = array(), $fields = '*', $page = null, $order = 'member.member_id desc', $limit = '')
+    {
+        return $this
+            ->table('member,declaration_form')
+            ->field($fields)
+            ->where($condition)
+            ->join('left')
+            ->on('member.member_id = declaration_form.member_id')
+            ->page($page)
+            ->limit($limit)
+            ->select();
+    }
+
+    /**
+     * 获取会员报单次数和出局次数
+     * @param int $member_id
+     * @return array
+     */
+    public function getOutgoTimes($member_id)
+    {
+        $times = $this->table('declaration_form')->field('COUNT(id) as declaration_times , COUNT(DISTINCT id,IF(state=4,TRUE,NULL)) as outgo_times')->where(array('member_id'=>$member_id))->find();
+        if (empty($times)){
+            $times['declaration_times'] = 0;
+            $times['outgo_times'] = 0;
+        }
+        return $times;
+    }
+
+    /**
+     * 获取会员总积分和预收益积分
+     * @param int $type 类型
+     * @param int $member_id 类型
+     * @return array
+     */
+    public function getIntegralTotal($type = 1,$member_id = 0)
+    {
+        if ($type==1){
+            $where = ' state = 1 ';
+            $data =  $this->table('member_declaration')->field('SUM(m_integral) as integral_total,SUM(estimate_integral) as estimate_integral_total')->where($where)->find();
+        }else{
+            $where = ' member_id = \''.$member_id.'\' and state = 1 ';
+            $data =  $this->table('member_declaration')->field('m_integral,estimate_integral')->where($where)->find();
+        }
         return $data;
     }
 

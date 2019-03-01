@@ -33,8 +33,8 @@
                 </dt>
                 <dd class="opt">
                     <select id="account_type" name="account_type">
-                        <option value="1" <?php echo ($output['account_type'] == '1') ? 'selected' : ''; ?>>余额</option>
-                        <option value="2" <?php echo ($output['account_type'] == '2') ? 'selected' : ''; ?>>股权</option>
+                        <option value="1" <?php echo ($output['account_type'] == '1') ? 'selected' : ''; ?>>积分</option>
+                        <option value="2" <?php echo ($output['account_type'] == '2') ? 'selected' : ''; ?>>预期积分</option>
                     </select>
                     <span class="err"></span>
                     <p class="notic"></p>
@@ -55,12 +55,12 @@
             </dl>
             <dl class="row">
                 <dt class="tit">
-                    <label><em>*</em>金额</label>
+                    <label><em>*</em>数量</label>
                 </dt>
                 <dd class="opt">
                     <input type="text" id="adjust_amount" name="adjust_amount" class="input-txt" />
                     <span class="err"></span>
-                    <p class="notic">对应金额填写</p>
+                    <p class="notic">对应数量填写</p>
                 </dd>
             </dl>
             <dl class="row">
@@ -93,7 +93,7 @@ function checkmember() {
     $.getJSON("index.php?act=account&op=check_member", { 'mobile': membermobile }, function(data) {
         if (data) {
             $("#tr_memberinfo").show();
-            var msg = "会员" + data.name + "当前余额:" + data.balance + "，当前股权:" + data.equity;
+            var msg = "会员" + data.name + "，当前积分:" + data.balance + "，当前预期积分:" + data.equity;
             $("#member_mobile").val(membermobile);
             $("#member_id").val(data.id);
             $("#td_memberinfo").text(msg);

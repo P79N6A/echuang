@@ -4,7 +4,7 @@
     <div class="fixed-bar">
         <div class="item-title">
             <div class="subject">
-                <h3>收益分配</h3>
+                <h3>高级设置</h3>
                 <h5></h5>
             </div>
         </div>
@@ -20,265 +20,129 @@
     <form method="post" enctype="multipart/form-data" name="form1">
         <input type="hidden" name="form_submit" value="ok" />
         <div style="margin-left: 10%;margin-right: 10%" class="ncap-form-default system-setting">
-            <b style="font-size: small;">销售提成</b>
-            <dl class="row">
-                <dt class="tit">
-                    <label for="vip_commission">VIP：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w65" id="vip_commission" name="vip_commission" value="<?php echo $output['s_info'][0]['ml_commission'] ? $output['s_info'][0]['ml_commission'] : 100; ?>" class="input-txt" type="text">　元
-                    <p class="notic">VIP会员报单,VIP可获得的奖励，设置为0则没有奖励</p>
-                </dd>
-            </dl>
+            <!--            <b style="font-size: small;">关系</b>-->
+
 
             <dl class="row">
                 <dt class="tit">
-                    <label for="shopkeeper_commission ">店主：</label>
+                    <label for="f_estimate_integral">预期收益：</label>
                 </dt>
                 <dd class="opt">
-                    <input class="w100" id="shopkeeper_commission" name="shopkeeper_commission" value="<?php echo $output['s_info'][1]['ml_commission'] ? $output['s_info'][1]['ml_commission'] : 80; ?>" class="input-txt" type="text">&nbsp;元
-                    <p class="notic">VIP会员报单，店主可获得的销售提成，设置为0则没有奖励</p>
+                    <input class="w65" id="f_estimate_integral" name="f_estimate_integral" value="<?php echo $output['s_info']['f_estimate_integral'] ? $output['s_info']['f_estimate_integral'] : 65600; ?>" class="input-txt" type="text">　积分
+                    <p class="notic">此设置数量为用户报单后将获得的预期收益积分。</p>
                 </dd>
             </dl>
 
-            <dl class="row">
-                <dt class="tit">
-                    <label for="partner_commission">合伙人：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="partner_commission" name="partner_commission" value="<?php echo $output['s_info'][2]['ml_commission'] ? $output['s_info'][2]['ml_commission'] : 40; ?>" class="input-txt" type="text">&nbsp;元
-                    <p class="notic">VIP会员报单，合伙人可获得的销售提成，设置为0则没有奖励</p>
-                </dd>
-            </dl>
-
-            <dl class="row">
-                <dt class="tit">
-                    <label for="senior_partner_commission">高级合伙人：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="senior_partner_commission" name="senior_partner_commission" value="<?php echo $output['s_info'][3]['ml_commission'] ? $output['s_info'][3]['ml_commission'] : 20; ?>" class="input-txt" type="text">&nbsp;元
-                    <p class="notic">VIP会员报单，高级合伙人可获得的销售提成，设置为0则没有奖励</p>
-                </dd>
-            </dl>
-<hr>
-            <b style="font-size: small;">销售折扣</b>
-            <dl class="row">
-                <dt class="tit">
-                    <label for="vip_ratio">VIP：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="vip_ratio" name="vip_ratio" value="<?php echo $output['s_info'][0]['ml_discount_ratio'] ? $output['s_info'][0]['ml_discount_ratio']*100 : 1; ?>" class="input-txt" type="text">&nbsp;%
-                    <p class="notic">VIP会员重销后，可获得的重销折扣，设置为0则没有折扣</p>
-                </dd>
-            </dl>
-            <dl class="row">
-                <dt class="tit">
-                    <label for="shopkeeper_ratio">店主：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="shopkeeper_ratio" name="shopkeeper_ratio" value="<?php echo $output['s_info'][1]['ml_discount_ratio'] ? $output['s_info'][1]['ml_discount_ratio'] *100: 1; ?>" class="input-txt" type="text">&nbsp;%
-                    <p class="notic">店主会员重销后，可获得的重销折扣，设置为0则没有折扣</p>
-                </dd>
-            </dl>
-
-            <dl class="row">
-                <dt class="tit">
-                    <label for="partner_ratio">合伙人：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="partner_ratio" name="partner_ratio" value="<?php echo $output['s_info'][2]['ml_discount_ratio'] ? $output['s_info'][2]['ml_discount_ratio']*100 : 1; ?>" class="input-txt" type="text">&nbsp;%
-                    <p class="notic">合伙人会员重销后，可获得的重销折扣，设置为0则没有折扣</p>
-                </dd>
-            </dl>
-
-            <dl class="row">
-                <dt class="tit">
-                    <label for="senior_partner_ratio">高级合伙人：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="senior_partner_ratio" name="senior_partner_ratio" value="<?php echo $output['s_info'][3]['ml_discount_ratio'] ? $output['s_info'][3]['ml_discount_ratio']*100 : 1; ?>" class="input-txt" type="text">&nbsp;%
-                    <p class="notic">高级合伙人会员重销后，可获得的重销折扣，设置为0则没有折扣</p>
-                </dd>
-            </dl>
-<hr>
-            <b style="font-size: small;">直推奖励</b>
-            <dl class="row">
-                <dt class="tit">
-                    <label for="shopkeeper_direct_prize">VIP会员直推店主分红：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="shopkeeper_direct_prize" name="shopkeeper_direct_prize" value="<?php echo $output['s_info'][1]['ml_direct_prize'] ? $output['s_info'][1]['ml_direct_prize'] : 1000; ?>" class="input-txt" type="text" />&nbsp;元
-                    <p class="notic">此设置金额*VIP会员直推店主分红，即为直推店主市场分红</p>
-                </dd>
-            </dl>
-<!--<hr>-->
-            <dl class="row">
-                <dt class="tit">
-                    <label for="partner_direct_prize">VIP会员直推合伙人分红：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="partner_direct_prize" name="partner_direct_prize" value="<?php echo $output['s_info'][2]['ml_direct_prize'] ? $output['s_info'][2]['ml_direct_prize'] : 2500; ?>" class="input-txt" type="text">&nbsp;元
-                    <p class="notic">此设置金额*VIP会员直推合伙人分红，即为直推店主市场分红</p>
-                </dd>
-            </dl>
-<!--<hr>-->
-<!--            <b style="font-size: small;">VIP会员直推高级合伙人分红</b>-->
-            <dl class="row">
-                <dt class="tit">
-                    <label for="senior_partner_direct_prize">VIP会员直推高级合伙人分红：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="senior_partner_direct_prize" name="senior_partner_direct_prize" value="<?php echo $output['s_info'][3]['ml_direct_prize'] ? $output['s_info'][3]['ml_direct_prize'] : 5000; ?>" class="input-txt" type="text">&nbsp;元
-                    <p class="notic">此设置金额*VIP会员直推高级合伙人分红，即为直推店主市场分红</p>
-                </dd>
-            </dl>
-<hr>
-            <b style="font-size: small;">平级奖励</b>
-<!--            <b>同级高级合伙人下级VIP销售提成一级</b>-->
-            <dl class="row">
-                <dt class="tit">
-                    <label for="senior_partner_commission_v1">同级高级合伙人下级VIP销售提成一级：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="senior_partner_commission_v1" name="senior_partner_commission_v1" value="<?php echo $output['other_setting']['senior_partner_commission_v1'] ? $output['other_setting']['senior_partner_commission_v1'] : 10; ?>" class="input-txt" type="text">&nbsp;元
-                    <p class="notic">推荐的高级合伙人培训津贴</p>
-                </dd>
-            </dl>
-<!--<hr>-->
-<!--            <b>同级高级合伙人下级VIP销售提成二级</b>-->
-            <dl class="row">
-                <dt class="tit">
-                    <label for="senior_partner_commission_v2">同级高级合伙人下级VIP销售提成二级：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="senior_partner_commission_v2" name="senior_partner_commission_v2" value="<?php echo $output['other_setting']['senior_partner_commission_v2'] ? $output['other_setting']['senior_partner_commission_v2'] : 5; ?>" class="input-txt" type="text">&nbsp;元
-                    <p class="notic">推荐的高级合伙人培训津贴</p>
-                </dd>
-<!--                <dd class="opt">-->
-<!--                    <div>金券分红最小限制值&nbsp;-->
-<!--                        <input class="w30" id="equity_dividend_min_limit" name="equity_dividend_min_limit" value="--><?php //echo $output['s_info']['equity_dividend_min_limit'] ? $output['s_info']['equity_dividend_min_limit'] : 3500; ?><!--" class="input-txt" type="text" />，金券分红最大限制值&nbsp;-->
-<!--                        <input class="w40" id="equity_dividend_max_limit" name="equity_dividend_max_limit" value="--><?php //echo $output['s_info']['equity_dividend_max_limit'] ? $output['s_info']['equity_dividend_max_limit'] : 35000; ?><!--" class="input-txt" type="text" />，当历史分红总额达到消费金豆数量的&nbsp;-->
-<!--                        <input class="w40" id="dividend_consume_multiple" name="dividend_consume_multiple" value="--><?php //echo $output['s_info']['dividend_consume_multiple'] ? $output['s_info']['dividend_consume_multiple'] : 10; ?><!--" class="input-txt" type="text" />倍，需要复投-->
-<!--                    </div>-->
-<!--                </dd>-->
-            </dl>
-<!--<hr>-->
-<!--            <b>同级高级合伙人下级VIP销售提成三级</b>-->
-            <dl class="row">
-                <dt class="tit">
-                    <label for="senior_partner_commission_v3">同级高级合伙人下级VIP销售提成三级：</label>
-                </dt>
-                <dd class="opt">
-                    <input class="w100" id="senior_partner_commission_v3" name="senior_partner_commission_v3" value="<?php echo $output['other_setting']['senior_partner_commission_v3'] ? $output['other_setting']['senior_partner_commission_v3'] : 5; ?>" class="input-txt" type="text">&nbsp;元
-                    <p class="notic">推荐的高级合伙人培训津贴</p>
-                </dd>
-<!--                <dd class="opt">-->
-<!--                    <div>金券限制值&nbsp;-->
-<!--                        <input class="w30" id="equity_limit" name="equity_limit" value="--><?php //echo $output['s_info']['equity_limit'] ? $output['s_info']['equity_limit'] : 3500; ?><!--" class="input-txt" type="text" />，少于金券限制值单笔只可接收金豆数&nbsp;-->
-<!--                        <input class="w30" type="text" name="bean_lt_recieve_limit" id="bean_lt_recieve_limit" value="--><?php //echo $output['s_info']['bean_lt_recieve_limit']; ?><!--" />，累计接收金豆数不能超过&nbsp;-->
-<!--                        <input class="w30" type="text" name="bean_lt_recieve_accumulate_limit" id="bean_lt_recieve_accumulate_limit" value="--><?php //echo $output['s_info']['bean_lt_recieve_accumulate_limit']; ?><!--">；-->
-<!--                        <br/>超过金券限制值单笔只可接收金豆数&nbsp;-->
-<!--                        <input class="w40" id="bean_egt_recieve_limit" name="bean_egt_recieve_limit" value="--><?php //echo $output['s_info']['bean_egt_recieve_limit']; ?><!--" class="input-txt" type="text" />，累计接收金豆数不能超过&nbsp;-->
-<!--                        <input class="w40" type="text" name="bean_egt_recieve_accumulate_limit" id="bean_egt_recieve_accumulate_limit" value="--><?php //echo $output['s_info']['bean_egt_recieve_accumulate_limit']; ?><!--">-->
-<!--                    </div>-->
-<!--                </dd>-->
-            </dl>
-<hr>
-<!--            <b>提现手续费</b>-->
-            <dl class="row">
-                <dt class="tit">提现手续费：</dt>
-                <dd class="opt">
-                    <input class="w100" id="withdraw_poundage" name="withdraw_poundage" value="<?php echo $output['member_system_setting'][0]['withdraw_poundage'] ? $output['member_system_setting'][0]['withdraw_poundage'] : 0.5; ?>" class="input-txt" type="text">&nbsp;%
-                    <p class="notic">每笔提现扣除的手续费</p>
-                </dd>
-<!--                <dd class="opt">-->
-<!--                    <div class="onoff">-->
-<!--                        <label for="honor_status1" class="cb-enable --><?php //if ($output['s_info']['honor_status'] == '1') {?><!--selected--><?php //}?><!--">-->
-<!--                            开启-->
-<!--                        </label>-->
-<!--                        <label for="honor_status0" class="cb-disable --><?php //if ($output['s_info']['honor_status'] == '0') {?><!--selected--><?php //}?><!--">-->
-<!--                            关闭-->
-<!--                        </label>-->
-<!--                        <input id="honor_status1" name="honor_status" --><?php //if ($output['s_info']['honor_status'] == '1') {?><!--checked="checked"-->
-<!--                        --><?php //}?><!-- value="1" type="radio" />-->
-<!--                        <input id="honor_status0" name="honor_status" --><?php //if ($output['s_info']['honorstatus'] == '0') {?><!--checked="checked"-->
-<!--                        --><?php //}?><!-- value="0" type="radio" />-->
-<!--                    </div>-->
-<!--                    <p class="notic"></p>-->
-<!--                </dd>-->
-            </dl>
-<hr>
-<!--            <b>提现限制</b>-->
-<!--            <dl class="row">-->
-<!--                <dt class="tit">自动封号条件：</dt>-->
-<!--                <dd class="opt">-->
-<!--                    <div>注册&nbsp;-->
-<!--                        <input class="w30" id="honor_days" name="honor_days" value="--><?php //echo $output['s_info']['honor_days'] ? $output['s_info']['honor_days'] : 60; ?><!--" class="input-txt" type="text" />天内没有达到&nbsp;-->
-<!--                        <input class="w30" type="text" name="honor_equity_num_limit" id="honor_equity_num_limit" value="--><?php //echo $output['s_info']['honor_equity_num_limit'] ? $output['s_info']['honor_equity_num_limit'] : 1; ?><!--" />个金券数量自动封号-->
-<!--                    </div>-->
-<!--                </dd>-->
-<!--            </dl>-->
-            <dl class="row">
-                <dt class="tit">提现限制：</dt>
-                <dd class="opt">
-                    <input class="w100" id="withdraw_limit" name="withdraw_limit" value="<?php echo $output['member_system_setting'][0]['withdraw_limit'] ? $output['member_system_setting'][0]['withdraw_limit'] : 100; ?>" class="input-txt" type="text">&nbsp;整数倍
-                    <p class="notic">提现须按此处设置的整数倍提现</p>
-                </dd>
-            </dl>
-<hr>
-            <dl class="row">
-                <dt class="tit">原始股兑换限制：</dt>
-                <dd class="opt">
-                    <input class="w100" id="equity_start_buy_limit" name="equity_start_buy_limit" value="<?php echo $output['member_system_setting'][0]['equity_start_buy_limit'] ? $output['member_system_setting'][0]['equity_start_buy_limit'] : 5000; ?>" class="input-txt" type="text">起购，
-                    <input class="w100" id="equity_add_buy_limit" name="equity_add_buy_limit" value="<?php echo $output['member_system_setting'][0]['equity_add_buy_limit'] ? $output['member_system_setting'][0]['equity_add_buy_limit'] : 100; ?>" class="input-txt" type="text">整倍数加购
-                    <p class="notic">会员换购原始股按此设置积分数兑换</p>
-                </dd>
-            </dl>
-<hr>
-            <dl class="row">
-                <dt class="tit">原始股兑换比例：</dt>
-                <dd class="opt">
-                    余额 : 股权 =
-                    <input class="w100" id="equity_exchange_ratio" name="equity_exchange_ratio" value="<?php echo $output['member_system_setting'][0]['equity_exchange_ratio'] ? $output['member_system_setting'][0]['equity_exchange_ratio'] : "1:1"; ?>" class="input-txt" type="text">
-                    <b>
-<!--                        :</b>-->
-<!--                    <input class="w100" id="equity_exchange_ratio" name="equity_exchange_ratio" value="--><?php //echo $output['member_system_setting'][0]['equity_exchange_ratio'] ? $output['member_system_setting'][0]['equity_exchange_ratio'] : 1; ?><!--" class="input-txt" type="text">-->
-                    <p class="notic">会员换购原始股按此设置余额股权比例兑换</p>
-                </dd>
-            </dl>
-<!--            <b>原始股兑换限制</b>-->
 <!--            <dl class="row">-->
 <!--                <dt class="tit">-->
-<!--                    静态分红是否开启：-->
+<!--                    <label for="f_declaration_time">报单收益：</label>-->
 <!--                </dt>-->
 <!--                <dd class="opt">-->
-<!--                    <div class="onoff">-->
-<!--                        <label for="dividend_status1" class="cb-enable --><?php //if ($output['s_info']['dividend_status'] == '1') {?><!--selected--><?php //}?><!--">-->
-<!--                            开启-->
-<!--                        </label>-->
-<!--                        <label for="dividend_status0" class="cb-disable --><?php //if ($output['s_info']['dividend_status'] == '0') {?><!--selected--><?php //}?><!--">-->
-<!--                            关闭-->
-<!--                        </label>-->
-<!--                        <input id="dividend_status1" name="dividend_status" --><?php //if ($output['s_info']['dividend_status'] == '1') {?><!--checked="checked"-->
-<!--                        --><?php //}?><!-- value="1" type="radio">-->
-<!--                        <input id="dividend_status0" name="dividend_status" --><?php //if ($output['s_info']['dividend_status'] == '0') {?><!--checked="checked"-->
-<!--                        --><?php //}?><!-- value="0" type="radio">-->
-<!--                    </div>-->
-<!--                    <p class="notic">-->
-<!--                        --><?php //echo $lang['site_state_notice']; ?>
-<!--                    </p>-->
+<!--                    <input class="w65" id="f_declaration_time" name="f_declaration_time" value="--><?php //echo $output['s_info']['f_declaration_time'] ? $output['s_info']['f_declaration_time'] : 48; ?><!--" class="input-txt" type="text">　积分-->
+<!--                    <p class="notic">此设置数量为用户报单后， 将会会预期收益积分中释放的收益积分。</p>-->
 <!--                </dd>-->
 <!--            </dl>-->
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="f_reward_integral">直推收益：</label>
+                </dt>
+                <dd class="opt">
+                    <input class="w65" id="f_reward_integral" name="f_reward_integral" value="<?php echo $output['s_info']['f_reward_integral'] ? $output['s_info']['f_reward_integral'] : 20; ?>" class="input-txt" type="text">　积分
+                    <p class="notic">此设置数量为用户报单后， 上面直推7级每级可从预期收益积分中释放的直推收益积分。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="f_deduction_integral">本人考核：</label>
+                </dt>
+                <dd class="opt">
+                    <input class="w65" id="f_deduction_integral" name="f_deduction_integral" value="<?php echo $output['s_info']['f_deduction_integral'] ? $output['s_info']['f_deduction_integral'] : 1000; ?>" class="input-txt" type="text">　积分
+                    <p class="notic">此设置数量为会员激活第二天开始6天内未直推满3个人，从第7天开始每天需扣除的积分数。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="f_declaration_time">直推考核：</label>
+                </dt>
+                <dd class="opt">
+                    <input class="w65" id="f_declaration_time" name="f_declaration_time" value="<?php echo $output['s_info']['f_declaration_time'] ? $output['s_info']['f_declaration_time'] : 48; ?>" class="input-txt" type="text">　积分
+                    <p class="notic">此设置数量为会员激活第二天开始6天内未直推满3个人，从第7天开始上面直推7级每天需扣除的积分数。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="f_service_charge">会员挂卖手续费：</label>
+                </dt>
+                <dd class="opt">
+                    <input class="w65" id="f_service_charge" name="f_service_charge" value="<?php echo $output['s_info']['f_service_charge'] ? $output['s_info']['f_service_charge'] : 20; ?>" class="input-txt" type="text">　%
+                    <p class="notic">会员挂卖积分据需燃烧的积分数，如挂卖100积分，扣除20积分后，在市场上挂卖只剩余80积分。</p>
+                </dd>
+            </dl>
+
+            <dl class="row">
+                <dt class="tit">
+                    <label for="f_vip_service_charge">创客VIP挂卖手续费：</label>
+                </dt>
+                <dd class="opt">
+                    <input class="w65" id="f_vip_service_charge" name="f_vip_service_charge" value="<?php echo $output['s_info']['f_vip_service_charge'] ? $output['s_info']['f_vip_service_charge'] : 10; ?>" class="input-txt" type="text">　%
+                    <p class="notic">创客VIP挂卖积分据需燃烧的积分数，如挂卖100积分，扣除10积分后，在市场上挂卖只剩余90积分。</p>
+                </dd>
+            </dl>
+
 <!--            <dl class="row">-->
-<!--                <dt class="tit">计划任务开启时间：</dt>-->
+<!--                <dt class="tit">-->
+<!--                    <label for="f_declaration_time">报单时间：</label>-->
+<!--                </dt>-->
 <!--                <dd class="opt">-->
-<!--                    <input id="task_start_time" name="task_start_time" type="text" class="text w130" value="--><?php //echo $output['s_info']['task_start_time'] ? $output['s_info']['task_start_time'] : '23:00'; ?><!--" />-->
-<!--                    <em class="add-on">-->
-<!--                        <i class="icon-calendar"></i>-->
-<!--                    </em>-->
-<!--                    <span></span>-->
+<!--                    <input class="w65" id="f_declaration_time" name="f_declaration_time" value="--><?php //echo $output['s_info']['f_declaration_time'] ? $output['s_info']['f_declaration_time'] : 48; ?><!--" class="input-txt" type="text">　天-->
+<!--                    <p class="notic">报单开始到结束的时间限制</p>-->
 <!--                </dd>-->
 <!--            </dl>-->
+<!---->
+<!--            <dl class="row">-->
+<!--                <dt class="tit">-->
+<!--                    <label for="f_recommend_num">直推限制：</label>-->
+<!--                </dt>-->
+<!--                <dd class="opt">-->
+<!--                    <input class="w65" id="f_recommend_num" name="f_recommend_num" value="--><?php //echo $output['s_info']['f_recommend_num'] ? $output['s_info']['f_recommend_num'] : 3; ?><!--" class="input-txt" type="text">　人-->
+<!--                    <p class="notic">直推人数限制</p>-->
+<!--                </dd>-->
+<!--            </dl>-->
+<!---->
+<!--            <dl class="row">-->
+<!--                <dt class="tit">-->
+<!--                    <label for="f_reward_integral">直推奖励：</label>-->
+<!--                </dt>-->
+<!--                <dd class="opt">-->
+<!--                    <input class="w65" id="f_reward_integral" name="f_reward_integral" value="--><?php //echo $output['s_info']['f_reward_integral'] ? $output['s_info']['f_reward_integral'] : 20; ?><!--" class="input-txt" type="text">　积分-->
+<!--                    <p class="notic">直推一人，本人和7个上级可从预期收益积分向会员积分转换的积分</p>-->
+<!--                </dd>-->
+<!--            </dl>-->
+<!---->
+<!--            <dl class="row">-->
+<!--                <dt class="tit">绩效考核：</dt>-->
+<!--                <dd class="opt">-->
+<!--                    <input class="w100" id="f_cycle_time" name="f_cycle_time" value="--><?php //echo $output['s_info']['f_cycle_time'] ? $output['s_info']['f_cycle_time'] : 6; ?><!--" class="input-txt" type="text">天，至少直推-->
+<!--                    <input class="w100" id="f_cycle_num" name="f_cycle_num" value="--><?php //echo $output['s_info']['f_cycle_num'] ? $output['s_info']['f_cycle_num'] : 3; ?><!--" class="input-txt" type="text">人-->
+<!--                    <p class="notic">绩效考核标准</p>-->
+<!--                </dd>-->
+<!--            </dl>-->
+<!---->
+<!--            <dl class="row">-->
+<!--                <dt class="tit">绩效惩罚：</dt>-->
+<!--                <dd class="opt">-->
+<!--                    本人扣除<input class="w100" id="f_deduction_integral" name="f_deduction_integral" value="--><?php //echo $output['s_info']['f_deduction_integral'] ? $output['s_info']['f_deduction_integral'] : 1000; ?><!--" class="input-txt" type="text">分，-->
+<!--                    上级扣除积分<input class="w100" id="f_superior_deduction_integral" name="f_superior_deduction_integral" value="--><?php //echo $output['s_info']['f_superior_deduction_integral'] ? $output['s_info']['f_superior_deduction_integral'] : 500; ?><!--" class="input-txt" type="text">分-->
+<!--                    <p class="notic">绩效未达标每天扣除积分</p>-->
+<!--                </dd>-->
+<!--            </dl>-->
+
+
+
             <div class="bot"><a href="JavaScript:void(0);" class="ncap-btn-big ncap-btn-green" onclick="document.form1.submit()">确认提交</a></div>
         </div>
     </form>

@@ -258,16 +258,17 @@ class distributionLogic
     public function getEstimateIntegral(){
         $setting_model = Model('setting');
         $setting = $setting_model->getListSetting();
-        $recommend_num = empty($setting['f_recommend_num'])?3:$setting['f_recommend_num'];//直推限制人数
-        $reward_integral = empty($setting['f_reward_integral'])?20:$setting['f_reward_integral'];//直推限制人数
-        $data = array('1'=>$recommend_num);
-        $num = $recommend_num;
-        for($i=1;$i<7;$i++)
-        {
-            $data[$i+1] = $data[$i]*$recommend_num;
-            $num += $data[$i+1];
-        }
-        $estimate_integral = ($num+1) * $reward_integral;
+//        $recommend_num = empty($setting['f_recommend_num'])?3:$setting['f_recommend_num'];//直推限制人数
+//        $reward_integral = empty($setting['f_reward_integral'])?20:$setting['f_reward_integral'];//直推限制人数
+//        $data = array('1'=>$recommend_num);
+//        $num = $recommend_num;
+//        for($i=1;$i<7;$i++)
+//        {
+//            $data[$i+1] = $data[$i]*$recommend_num;
+//            $num += $data[$i+1];
+//        }
+//        $estimate_integral = ($num+1) * $reward_integral;
+        $estimate_integral = empty($setting['f_estimate_integral'])?65600:$setting['f_estimate_integral'];
         return $estimate_integral;
     }
 
