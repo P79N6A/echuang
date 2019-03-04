@@ -1,6 +1,6 @@
 <?php
 /**
- * 余额明细
+ * 积分明细
  *
  */
 defined('In33hao') or exit('Access Invild!');
@@ -14,7 +14,7 @@ class bonusControl extends SystemControl {
 	}
 
 	/**
-	 * bonus_detailsOp 余额明细
+	 * bonus_detailsOp 积分明细
 	 * @return [type] [description]
 	 */
 	public function bonus_detailsOp() {
@@ -23,33 +23,34 @@ class bonusControl extends SystemControl {
 	}
 
 	/**
-	 * get_xmlOp 获取余额明细
+	 * get_xmlOp 获取积分明细
 	 * @return [type] [description]
 	 */
 	public function get_xmlOp() {
-//	    var_dump($_POST);die();
-		$model_bean = Model('bean');
+		$model_member_integral_log = Model('member_integral_log');
 		$condition = array();
         $this->_get_condition($condition);
         $order = 'add_time desc';
 		$page = $_POST['rp'];
 
-        $balance_list = $model_bean->getMemberBalanceRecord($condition,'*', $page, $order);
+        $balance_list = $model_member_integral_log->getMemberIntegralLogList($condition,'*', $page, $order);
         $mobile_arr = Model('member_extend')->getMemberMobileArr();
 		$data = array();
-		$data['now_page'] = $model_bean->shownowpage();
-		$data['total_num'] = $model_bean->gettotalnum();
-
+		$data['now_page'] = $model_member_integral_log->shownowpage();
+		$data['total_num'] = $model_member_integral_log->gettotalnum();
+        $type = $model_member_integral_log->state;
 		foreach ($balance_list as $v) {
 			$param = array();
 			$param['operation'] = "----";
 			$param['member_mobile'] = $mobile_arr[$v['member_id']];
-			$param['bdl_member_name'] = $v['member_name'];
-			$param['type'] = str_replace(array('bonus','consume','withdraw','admin','recharge','equity','inventory'),array("分红","消费","提现","管理员","充值","股权兑换","库存解冻"),$v['type']);
-			$param['operate_amount'] = $v['operate_amount'];
-			$param['surplus_amount'] = $v['surplus_amount'];
+			$param['bdl_member_name'] = Model('member')->getMemberInfo(array('member_id'=>$v['member_id']),'member_name')['member_name'];
+			$param['type'] = $type[$v['type']];
+			$param['variable_integral'] = "<span ".(($v['variable_integral']<0)?"class='red'":"").">".$v['variable_integral']."</span>";
+			$param['stable_integral'] = $v['stable_integral'];
+			$param['variable_estimate_integral'] = "<span ".(($v['variable_estimate_integral']<0)?"class='red'":"").">".$v['variable_estimate_integral']."</span>";
+			$param['stable_estimate_integral'] = $v['stable_estimate_integral'];
             $param['add_time'] = $v['add_time'] ? date('Y-m-d H:i:s', $v['add_time']) : '';
-            $param['content'] = $v['content'];
+            $param['content'] = $v['remarks'];
             $data['list'][$v['id']] = $param;
 		}
 		echo Tpl::flexigridXML($data);
@@ -61,7 +62,9 @@ class bonusControl extends SystemControl {
 	 * @return [type] [description]
 	 */
 	public function export_xlsOp() {
-		$model_member_extend = Model('member_extend');
+        $model_member_integral_log = Model('member_integral_log');
+        $type = $model_member_integral_log->state;
+        $mobile_arr = Model('member_extend')->getMemberMobileArr();
 		$model_balance = Model('balance');
 		$condition = array();
 		$id = $_GET['id'];
@@ -70,7 +73,7 @@ class bonusControl extends SystemControl {
 		} else {
 			$this->_get_condition($condition);
 		}
-		$data = $model_balance->getBalanceRecord($condition, '*', null, 'add_time desc', false);
+		$data = $model_member_integral_log->getMemberIntegralLogList($condition,'*', null, 'add_time desc',false);;
 		$excel_obj = new Excel();
 		$excel_data = array();
 		// 设置样式
@@ -79,26 +82,30 @@ class bonusControl extends SystemControl {
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员手机');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员名字');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '类型');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '调整金额');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '调整后余额');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '调整积分');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '调整后积分');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '调整预期积分');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '调整后预期积分');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '时间');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '备注');
 
 		foreach ((array) $data as $k => $v) {
 			$tmp = array();
-			$tmp[] = array('data' => $v['member_mobile']);
-			$tmp[] = array('data' => $v['member_name']);
-			$tmp[] = array('data' => str_replace(array('bonus','consume','withdraw','admin','recharge','equity','inventory'),array("分红","消费","提现","管理员","充值","股权","库存解冻"),$v['type']));
-			$tmp[] = array('data' => floatval($v['operate_amount']));
-			$tmp[] = array('data' => floatval($v['surplus_amount']));
+			$tmp[] = array('data' => $mobile_arr[$v['member_id']]);
+			$tmp[] = array('data' => Model('member')->getMemberInfo(array('member_id'=>$v['member_id']),'member_name')['member_name']);
+			$tmp[] = array('data' => $type[$v['type']]);
+			$tmp[] = array('data' => $v['variable_integral']);
+			$tmp[] = array('data' => $v['stable_integral']);
+			$tmp[] = array('data' => $v['variable_estimate_integral']);
+			$tmp[] = array('data' => $v['stable_estimate_integral']);
 			$tmp[] = array('data' => date('Y-m-d H:i:s', $v['add_time'] ? $v['add_time'] : ''));
-			$tmp[] = array('data' => $v['content'] );
+			$tmp[] = array('data' => $v['remarks'] );
 			$excel_data[] = $tmp;
 		}
 		$excel_data = $excel_obj->charset($excel_data, CHARSET);
 		$excel_obj->addArray($excel_data);
-		$excel_obj->addWorksheet($excel_obj->charset('会员奖金', CHARSET));
-		$excel_obj->generateXML($excel_obj->charset('会员奖金', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
+		$excel_obj->addWorksheet($excel_obj->charset('会员积分', CHARSET));
+		$excel_obj->generateXML($excel_obj->charset('会员积分', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
 	}
 
 	/**
@@ -122,7 +129,16 @@ class bonusControl extends SystemControl {
 					$condition['member_id'] = null;
 				}
 			} else {
-				$condition['member_name'] = array('like', '%' . $param['query'] . '%');
+                $list = Model('member')->getMemberList(array('member_name' => array('like', '%' . $param['query'] . '%')));
+                if (!empty($list)) {
+                    $arr = array();
+                    foreach ($list as $v) {
+                        $arr[] = $v['member_id'];
+                    }
+                    $condition['member_id'] = array('in', $arr);
+                } else {
+                    $condition['member_id'] = null;
+                }
 			}
 		}
 		if ($param['keyword_type'] && $param['keyword']) {

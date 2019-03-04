@@ -1242,56 +1242,18 @@ class member_extendModel extends Model {
             $member_info['member_mobile'] = $register_info['member_mobile'];
             $member_info['member_avatar'] = $register_info['member_avatar'];
 			$member_info['member_passwd'] = md5($register_info['password']);
-//			// 添加支付密码
-//			if (isset($register_info['paypasswd'])) {
-//				$member_info['member_paypwd'] = md5($register_info['paypasswd']);
-//			}
-			// 添加邀请人
-			$member_info['inviter_id'] = $register_info['inviter_id'];
-			// 分销
-			$member_info['invite_one'] = $register_info['invite_one'];
-			$member_info['invite_two'] = $register_info['invite_two'];
-			$member_info['invite_three'] = $register_info['invite_three'];
-
 			$member_info['member_time'] = $nowtime;
 			$member_info['member_login_time'] = $nowtime;
 			$member_info['member_old_login_time'] = $nowtime;
 			$member_info['member_login_ip'] = getIp();
 			$member_info['member_old_login_ip'] = getIp();
 			$member_info['member_mobile_bind'] = 1;
+			$member_info['member_level'] = $register_info['member_level'];
 			$insert_id = $this->addMemberInfo($member_info);
 			$member_info['member_id'] = $insert_id;
-			$member_extend_info = array();
-//            var_dump($register_info['member_level']);die();
-            //添加会员等级
-//            if (isset($register_info['member_level'])) {
-//                $member_extend_info['member_level'] = $register_info['member_level'];
-//            }
-            $member_extend_info['me_member_id'] = $insert_id;
-            $member_extend_info['invite_id'] = $register_info['invite_id'];
-//			$member_extend_info['access_id'] = $register_info['access_id'];
-//			$member_extend_info['depth'] = $register_info['depth'];
-            $member_extend_info['reg_time'] = $nowtime;
-//            $member_extend_info['left_right_area'] = $register_info['left_right_area'];
-			$this->addMemberExtend($member_extend_info);
-			$info = array_merge($member_info, $member_extend_info);
-			// 添加银行卡
-//			if ($bankInsert) {
-//				$data['mb_member_id'] = $info['member_id'];
-//				$data['mb_account_name'] = $register_info["account_name"];
-//				$data['mb_account_bank_name'] = $register_info["account_bank_name"];
-//				$data['mb_account_branch'] = $register_info["account_branch"];
-//				$data['mb_account_num'] = $register_info['account_num'];
-//				$data['mb_addtime'] = TIMESTAMP;
-//				$result = Model('bank')->addMemberBank($data);
-//				if (!$result) {
-//					throw new Exception('添加银行账号失败');
-//				}
-//			}
-
+			$info = $member_info;
             //将用户加入child_level_num表
             $this->addToChildLevelNumTable($insert_id);
-
 			if ($createSession) {
 				$this->createSession($info);
 			}

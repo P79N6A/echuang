@@ -1,6 +1,6 @@
 <?php
 /**
- * 提现管理
+ * 积分回购管理
  *
  */
 defined('In33hao') or exit('Access Invild!');
@@ -14,7 +14,7 @@ class withdrawControl extends SystemControl {
 	}
 
 	/**
-	 * withdraw_manageOp 提现管理
+	 * withdraw_manageOp 积分回购管理
 	 * @return [type] [description]
 	 */
 	public function withdraw_manageOp() {
@@ -23,7 +23,7 @@ class withdrawControl extends SystemControl {
 	}
 
 	/**
-	 * withdraw_paymentOp 提现支付
+	 * withdraw_paymentOp 积分回购支付
 	 * @return [type] [description]
 	 */
 	public function withdraw_paymentOp() {
@@ -44,21 +44,21 @@ class withdrawControl extends SystemControl {
 			$result = Model('member_extend')->withdraw_confirm($data);
 			if (isset($result['error'])) {
 				if (isset($_GET['type'])) {
-					showMessage('提现失败', '', '', 'error');
+					showMessage('积分回购失败', '', '', 'error');
 				} else {
-					exit(json_encode(array('state' => false, 'msg' => '提现失败')));
+					exit(json_encode(array('state' => false, 'msg' => '积分回购失败')));
 				}
 			}
 		}
 		if (isset($_GET['type'])) {
-			showMessage('提现成功', '', '', 'error');
+			showMessage('积分回购成功', '', '', 'error');
 		} else {
-			exit(json_encode(array('state' => true, 'msg' => "提现成功")));
+			exit(json_encode(array('state' => true, 'msg' => "积分回购成功")));
 		}
 	}
 
 	/**
-	 * withdraw_refuseOp 提现拒绝
+	 * withdraw_refuseOp 积分回购拒绝
 	 * @return [type] [description]
 	 */
 	public function withdraw_refuseOp() {
@@ -116,7 +116,7 @@ class withdrawControl extends SystemControl {
 	}
 
 	/**
-	 * withdraw_viewOp 查看提现信息
+	 * withdraw_viewOp 查看积分回购信息
 	 * @return [type] [description]
 	 */
 	public function withdraw_viewOp() {
@@ -130,12 +130,12 @@ class withdrawControl extends SystemControl {
 			Tpl::setDirquna('member_center');
 			Tpl::showpage('withdraw.withdraw_view', 'null_layout');
 		} else {
-			showMessage('提现信息错误', '', '', 'error');
+			showMessage('积分回购信息错误', '', '', 'error');
 		}
 	}
 
 	/**
-	 * get_xmlOp 获取提现数据
+	 * get_xmlOp 获取积分回购数据
 	 * @return [type] [description]
 	 */
 	public function get_xmlOp() {
@@ -153,7 +153,7 @@ class withdrawControl extends SystemControl {
 		foreach ($withdraw_list as $v) {
 			$param = array();
 			if ($v['wl_state'] != 0) {
-				$param['operation'] = "<a class='btn green' href='javascript:void(0)' onclick=\"ajax_form('withdraw_info','查看提现编号“" . $v['wl_id'] . "”的明细', 'index.php?act=withdraw&op=withdraw_view&sn=" . $v['wl_sn'] . "', 640)\" ><i class='fa fa-list-alt'></i>查看</a>";
+				$param['operation'] = "<a class='btn green' href='javascript:void(0)' onclick=\"ajax_form('withdraw_info','查看积分回购编号“" . $v['wl_id'] . "”的明细', 'index.php?act=withdraw&op=withdraw_view&sn=" . $v['wl_sn'] . "', 640)\" ><i class='fa fa-list-alt'></i>查看</a>";
 			} else {
 				$param['operation'] = "<a class='btn blue' href='index.php?act=withdraw&op=withdraw_payment&type=one&id=" . $v['wl_id'] . "'><i class='fa fa-pencil-square-o'></i>支付</a><a class='btn blue' href='index.php?act=withdraw&op=withdraw_refuse&type=one&id=" . $v['wl_id'] . "'><i class='fa fa-pencil-square-o'></i>拒绝</a>";
 			}
@@ -197,16 +197,16 @@ class withdrawControl extends SystemControl {
 		// header
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员手机');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员姓名');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '提现单号');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分回购单号');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '开户行');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '开户支行');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '开户姓名');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '银行帐号');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '提现金额');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分回购金额');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '手续费');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '到账金额');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '提现时间');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '提现状态');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分回购时间');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分回购状态');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '支付时间');
 		foreach ((array) $data as $k => $v) {
 			$tmp = array();
@@ -228,8 +228,8 @@ class withdrawControl extends SystemControl {
 		}
 		$excel_data = $excel_obj->charset($excel_data, CHARSET);
 		$excel_obj->addArray($excel_data);
-		$excel_obj->addWorksheet($excel_obj->charset('提现管理', CHARSET));
-		$excel_obj->generateXML($excel_obj->charset('提现管理', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
+		$excel_obj->addWorksheet($excel_obj->charset('积分回购管理', CHARSET));
+		$excel_obj->generateXML($excel_obj->charset('积分回购管理', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
 	}
 
 	/**
@@ -258,16 +258,16 @@ class withdrawControl extends SystemControl {
 		// header
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员手机');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员姓名');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '提现单号');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分回购单号');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '开户行');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '开户支行');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '开户姓名');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '银行帐号');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '提现金额');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分回购金额');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '手续费');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '到账金额');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '提现时间');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '提现状态');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分回购时间');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分回购状态');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '支付时间');
 		foreach ((array) $data as $k => $v) {
 			$tmp = array();
@@ -289,8 +289,8 @@ class withdrawControl extends SystemControl {
 		}
 		$excel_data = $excel_obj->charset($excel_data, CHARSET);
 		$excel_obj->addArray($excel_data);
-		$excel_obj->addWorksheet($excel_obj->charset('提现管理', CHARSET));
-		$excel_obj->generateXML($excel_obj->charset('提现管理', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
+		$excel_obj->addWorksheet($excel_obj->charset('积分回购管理', CHARSET));
+		$excel_obj->generateXML($excel_obj->charset('积分回购管理', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
 	}
 
 	/**

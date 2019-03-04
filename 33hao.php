@@ -102,7 +102,7 @@ define('ADMIN_MODULES_CIECLE', 'modules/circle');
 define('ADMIN_MODULES_MICEOSHOP', 'modules/microshop');
 define('ADMIN_MODULES_FLEA', 'modules/flea');
 define('ADMIN_MODULES_MOBILE', 'modules/mobile');
-define('ADMIN_MODULES_DECLARATION_FROM', 'modules/declaration_from');
+//define('ADMIN_MODULES_DECLARATION_FROM', 'modules/declaration_from');报单系统
 define('ADMIN_MODULES_MEMBER_SYSTEM', 'modules/member_system');
 define('MEMBER_ATTACH_COMMON', 'member_system/common');
 

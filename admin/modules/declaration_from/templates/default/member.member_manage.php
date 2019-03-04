@@ -104,9 +104,7 @@ $(function() {
         ],
         searchitems: [
             {display: '会员手机', name : 'member_mobile'},
-            // {display: '会员姓名', name : 'member_name'},
             {display: '推荐人手机', name: 'invite_mobile'},
-            // {display: '接点人手机', name: 'access_mobile'}
             ],
         sortname: "member_time",
         sortorder: "desc",

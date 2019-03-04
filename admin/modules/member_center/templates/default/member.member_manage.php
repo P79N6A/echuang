@@ -83,30 +83,21 @@ $(function() {
             {display: '会员手机', name : 'member_mobile', width : 130, sortable : false, align: 'center'},
             {display: '真实姓名', name : 'member_name', width : 130, sortable : false, align: 'center'},
             {display: '推荐人手机', name : 'invite_mobile', width : 130, sortable : false, align: 'center'},
-            // {display: '接点人手机', name : 'access_mobile', width : 160, sortable : false, align: 'center'},
             {display: '注册时间', name : 'member_time', width : 130, sortable : false, align: 'center'},
             {display: '会员状态', name : 'member_state', width : 130, sortable : false, align: 'center'},
             {display: '会员等级', name : 'customer_level', width : 130, sortable : false, align: 'center'},
-            // {display: '接点族谱图', name : 'access_family_tree', width : 160, sortable : false, align: 'center'},
-            // {display: '会员系统登录', name : 'direct_login', width : 160, sortable : false, align: 'center'},
             {display: '推荐族谱图', name : 'invite_family_tree', width : 130, sortable : false, align: 'center'},
             ],
         buttons : [
             {display: '<i class="fa fa-plus"></i>新增会员', name : 'add', bclass : 'add', title : '新增会员数据', onpress : fg_operation },
             {display: '<i class="fa fa-file-excel-o"></i>导出数据', name : 'xls', bclass : 'xls', title : '将选定行数据导出execl文件', onpress : fg_operation },
-            {display: '<b style="color: red" id="strategic_partner" "></b>',},//战略合伙人
-            {display: '<b style="color: red" id="senior_partner" "></b>'},//高级合伙人
-            {display: '<b style="color: red" id="partner" "></b>'},//合伙人
-            {display: '<b style="color: red" id="shopkeeper" "></b>'},//店主
+            {display: '<b style="color: red" id="ordinary_user" "></b>'},//普通用户
+            {display: '<b style="color: red" id="ordinary_member" "></b>'},//普通会员
             {display: '<b style="color: red" id="vip" "></b>'},//VIP
-            {display: '<b style="color: red" id="experience" "></b>'},//体验用户
-
         ],
         searchitems: [
             {display: '会员手机', name : 'member_mobile'},
-            // {display: '会员姓名', name : 'member_name'},
             {display: '推荐人手机', name: 'invite_mobile'},
-            // {display: '接点人手机', name: 'access_mobile'}
             ],
         sortname: "member_time",
         sortorder: "desc",
@@ -157,12 +148,9 @@ $('#query_end_date').datepicker();
             "<?php echo C('base_site_url');?>/admin/modules/member_center/index.php?act=member&op=getMemberLevelNum",
             function (res) {
                 var data = eval("("+res+")")
-                $("#strategic_partner").text("战略合伙人:"+data.strategic_partner)
-                $("#senior_partner").text("高级合伙人:"+data.senior_partner)
-                $("#partner").text("合伙人:"+data.partner)
-                $("#shopkeeper").text("店主:"+data.shopkeeper)
-                $("#vip").text("VIP:"+data.vip)
-                $("#experience").text("体验用户:"+data.experience)
+                $("#ordinary_user").text("普通用户:"+data.ordinary_user)
+                $("#ordinary_member").text("普通会员:"+data.ordinary_member)
+                $("#vip").text("创客VIP:"+data.vip)
                 // console.log(data)
             }
         )

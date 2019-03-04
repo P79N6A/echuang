@@ -18,17 +18,23 @@ define('MEMBER_INTEGRAL_LOG_TYPE_THREE', 3);
 define('MEMBER_INTEGRAL_LOG_TYPE_FOUR', 4);
 define('MEMBER_INTEGRAL_LOG_TYPE_FIVE', 5);
 define('MEMBER_INTEGRAL_LOG_TYPE_SIX', 6);
+define('MEMBER_INTEGRAL_LOG_TYPE_SEVEN', 7);
+define('MEMBER_INTEGRAL_LOG_TYPE_EIGHT', 8);
+define('MEMBER_INTEGRAL_LOG_TYPE_NINE', 9);
 
 class member_integral_logModel extends Model {
 
     public $state = array(
-        MEMBER_INTEGRAL_LOG_TYPE_ZERO => '下级分润',
-        MEMBER_INTEGRAL_LOG_TYPE_ONE => '绩效扣除',
+        MEMBER_INTEGRAL_LOG_TYPE_ZERO => '报单收益',
+        MEMBER_INTEGRAL_LOG_TYPE_ONE => '绩效考核扣除',
         MEMBER_INTEGRAL_LOG_TYPE_TWO => '兑换商品',
         MEMBER_INTEGRAL_LOG_TYPE_THREE => '市场挂卖',
         MEMBER_INTEGRAL_LOG_TYPE_FOUR => '市场购入',
-        MEMBER_INTEGRAL_LOG_TYPE_FIVE => '赠送好友',
-        MEMBER_INTEGRAL_LOG_TYPE_SIX => '好友赠送',
+        MEMBER_INTEGRAL_LOG_TYPE_FIVE => '转赠',
+        MEMBER_INTEGRAL_LOG_TYPE_SIX => '接收转赠',
+        MEMBER_INTEGRAL_LOG_TYPE_SEVEN => '下级绩效考核扣除',
+        MEMBER_INTEGRAL_LOG_TYPE_EIGHT => '激活会员奖励',
+        MEMBER_INTEGRAL_LOG_TYPE_NINE => '后台调整',
     );
 
     public function __construct(){

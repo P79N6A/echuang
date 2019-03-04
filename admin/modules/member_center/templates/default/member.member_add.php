@@ -23,7 +23,7 @@
                 <dd class="opt">
                     <input type="text" name="member_mobile" id="member_mobile" class="input-txt" value="" />
                     <span class="err"></span>
-                    <p class="notic">填写推荐人手机号码</p>
+                    <p class="notic">填写手机号码</p>
                 </dd>
             </dl>
             <dl class="row">
@@ -36,26 +36,23 @@
                     <p class="notic">填写会员姓名,仅限于中文名</p>
                 </dd>
             </dl>
-            <dl class="row">
-                <dt class="tit">
-                    <label for="member_invite">推荐人</label>
-                </dt>
-                <dd class="opt">
-                    <input type="text" id="member_invite" name="member_invite" class="input-txt" value="" />
-                    <span class="err"></span>
-                    <p class="notic">填写推荐人手机号码</p>
-                </dd>
-            </dl>
+<!--            <dl class="row">-->
+<!--                <dt class="tit">-->
+<!--                    <label for="member_invite">推荐人</label>-->
+<!--                </dt>-->
+<!--                <dd class="opt">-->
+<!--                    <input type="text" id="member_invite" name="member_invite" class="input-txt" value="" />-->
+<!--                    <span class="err"></span>-->
+<!--                    <p class="notic">填写推荐人手机号码</p>-->
+<!--                </dd>-->
+<!--            </dl>-->
             <dl class="row">
                 <dt class="tit">会员等级</dt>
                 <dd class="opt">
                     <select class="input-txt" name="customer_level" id="customer_level">
-                        <option id="experience" value="0">体验用户</option>
-                        <option id="vip" value="1">VIP</option>
-                        <option id="shopkeeper" value="2">店主</option>
-                        <option id="partner" value="3">合伙人</option>
-                        <option id="senior_partner" value="4">高级合伙人</option>
-                        <option id="strategic_partner" value="5">战略合伙人</option>
+                        <option id="ordinary_user" value="0">普通用户</option>
+                        <option id="ordinary_member" value="1">普通会员</option>
+                        <option id="vip" value="2">创客VIP</option>
                     </select>
                 </dd>
             </dl>

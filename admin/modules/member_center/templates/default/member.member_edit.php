@@ -33,14 +33,14 @@
                     <p class="notic"></p>
                 </dd>
             </dl>
-            <dl class="row">
-                <dt class="tit">
-                    <label>推荐人</label>
-                </dt>
-                <dd class="opt">
-                	<label><?php echo $output['mobilearr'][$output['info']['invite_id']]; ?></label>
-                </dd>
-            </dl>
+<!--            <dl class="row">-->
+<!--                <dt class="tit">-->
+<!--                    <label>推荐人</label>-->
+<!--                </dt>-->
+<!--                <dd class="opt">-->
+<!--                	<label>--><?php //echo $output['mobilearr'][$output['info']['invite_id']]; ?><!--</label>-->
+<!--                </dd>-->
+<!--            </dl>-->
 <!--            <dl class="row">-->
 <!--                <dt class="tit">-->
 <!--                    <label>接点人</label>-->
@@ -53,12 +53,9 @@
                 <dt class="tit">会员等级</dt>
                 <dd class="opt">
                    <select class="input-txt" name="member_level" id="member_level">
-                        <option id="experience" value="0">体验用户</option>
-                        <option id="vip" value="1">VIP</option>
-                        <option id="shopkeeper" value="2">店主</option>
-                        <option id="partner" value="3">合伙人</option>
-                        <option id="senior_partner" value="4">高级合伙人</option>
-                        <option id="strategic_partner" value="5">战略合伙人</option>
+                        <option id="ordinary_user" value="0">普通用户</option>
+                        <option id="ordinary_member" value="1">普通会员</option>
+                        <option id="vip" value="2">创客VIP</option>
                     </select>
                 </dd>
             </dl>
@@ -82,26 +79,26 @@
                     <p class="notic">不填写默认不修改</p>
                 </dd>
             </dl>
-            <dl class="row">
-                <dt class="tit">
-                    <label for="member_paypwd">支付密码</label>
-                </dt>
-                <dd class="opt">
-                    <input type="password" id="member_paypwd" name="member_paypwd" class="input-txt" value="" />
-                    <span class="err"></span>
-                    <p class="notic">不填写默认不修改</p>
-                </dd>
-            </dl>
-            <dl class="row">
-                <dt class="tit">
-                    <label for="member_paypwd_confirm">确认支付密码</label>
-                </dt>
-                <dd class="opt">
-                    <input type="password" id="member_paypwd_confirm" name="member_paypwd_confirm" class="input-txt" value="" />
-                    <span class="err"></span>
-                    <p class="notic">不填写默认不修改</p>
-                </dd>
-            </dl>
+<!--            <dl class="row">-->
+<!--                <dt class="tit">-->
+<!--                    <label for="member_paypwd">支付密码</label>-->
+<!--                </dt>-->
+<!--                <dd class="opt">-->
+<!--                    <input type="password" id="member_paypwd" name="member_paypwd" class="input-txt" value="" />-->
+<!--                    <span class="err"></span>-->
+<!--                    <p class="notic">不填写默认不修改</p>-->
+<!--                </dd>-->
+<!--            </dl>-->
+<!--            <dl class="row">-->
+<!--                <dt class="tit">-->
+<!--                    <label for="member_paypwd_confirm">确认支付密码</label>-->
+<!--                </dt>-->
+<!--                <dd class="opt">-->
+<!--                    <input type="password" id="member_paypwd_confirm" name="member_paypwd_confirm" class="input-txt" value="" />-->
+<!--                    <span class="err"></span>-->
+<!--                    <p class="notic">不填写默认不修改</p>-->
+<!--                </dd>-->
+<!--            </dl>-->
             <dl class="row">
                 <dt class="tit">
                     <label>状态</label>

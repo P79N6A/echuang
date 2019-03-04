@@ -70,7 +70,7 @@ function ajax_data(o) {
             } else {
                 $("#" + init_val).after("<ul id='" + aa + "'></ul>");
                 for (var i = 0; i < json.length; i++) {
-                    $("#" + aa).append("<li class='parent_li'><span title='Collapse this branch' onclick='ajax_data(this)' id='" + json[i].me_member_id + "'><i class='icon-plus-sign'></i>" + json[i].member_mobile + '[' + json[i].member_truename + "]</span></li>");
+                    $("#" + aa).append("<li class='parent_li'><span title='Collapse this branch' onclick='ajax_data(this)' id='" + json[i].member_id + "'><i class='icon-plus-sign'></i>" + json[i].member_mobile + '[' + json[i].member_truename + "]</span></li>");
                 }
             }
         });

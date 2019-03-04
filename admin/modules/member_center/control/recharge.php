@@ -1,6 +1,6 @@
 <?php
 /**
- * 充值管理
+ * 积分交易管理
  *
  */
 defined('In33hao') or exit('Access Invild!');
@@ -17,7 +17,7 @@ class rechargeControl extends SystemControl
     }
 
     /**
-     * recharge_manageOp 充值管理
+     * recharge_manageOp 积分交易管理
      * @return [type] [description]
      */
     public function recharge_manageOp()
@@ -106,13 +106,13 @@ class rechargeControl extends SystemControl
 		// 设置样式
 		$excel_obj->setStyle(array('id' => 's_title', 'Font' => array('FontName' => '宋体', 'Size' => '12', 'Bold' => '1')));
 		// header
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '充值单号');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分交易单号');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员手机');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '真实姓名');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '充值账户');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '充值金额');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分交易账户');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分交易金额');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '申请时间');
-		$excel_data[0][] = array('styleid' => 's_title', 'data' => '充值状态');
+		$excel_data[0][] = array('styleid' => 's_title', 'data' => '积分交易状态');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '支付方式');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '支付时间');
 
@@ -131,7 +131,7 @@ class rechargeControl extends SystemControl
 		}
 		$excel_data = $excel_obj->charset($excel_data, CHARSET);
 		$excel_obj->addArray($excel_data);
-		$excel_obj->addWorksheet($excel_obj->charset('充值管理', CHARSET));
-		$excel_obj->generateXML($excel_obj->charset('充值管理', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
+		$excel_obj->addWorksheet($excel_obj->charset('积分交易管理', CHARSET));
+		$excel_obj->generateXML($excel_obj->charset('积分交易管理', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
 	}
 }

@@ -17,10 +17,6 @@ class areaControl extends apiEncryptCommonControl {
 	}
 
 	public function indexOp() {
-
-	    $distribution_logic = Logic('distribution');
-	    $distribution_logic->getInviteId(10000224);
-
 		$this->area_listOp();
 	}
 

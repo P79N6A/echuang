@@ -99,14 +99,16 @@ class distributionLogic
         $level = $model_declaration_form->level;
         for($i=0;$i<8;$i++)
         {
+            $type = 0;
             if ($i == 0){
                 $level[$i] = 'member_id';
+                $type = 8;
             }
             if (!empty($declaration_info[$level[$i]])){
                 $sup_menber_declaration_info = $model_declaration_form->getMenberDeclarationFromInfo($declaration_info[$level[$i]]);
                 if (!empty($sup_menber_declaration_info) && $sup_menber_declaration_info['estimate_integral'] > $distribution_integral){
                     $m_increase_integral = $distribution_integral+$sup_menber_declaration_info['m_integral'];
-                    $d_increase_integral = $distribution_integral+$sup_menber_declaration_info['m_integral'];
+                    $d_increase_integral = $distribution_integral+$sup_menber_declaration_info['d_integral'];
                     $estimate_integral = $sup_menber_declaration_info['estimate_integral']-$distribution_integral;
                     Model('member')->editMember(array('member_id'=>$sup_menber_declaration_info['member_id']), array('integral'=>$m_increase_integral));
                     Model('declaration_form')->editDeclarationFrom(array('id'=>$sup_menber_declaration_info['id']),array('integral'=>$d_increase_integral,'estimate_integral'=>$estimate_integral));
@@ -114,9 +116,9 @@ class distributionLogic
                         'member_id'=>$sup_menber_declaration_info['member_id'],
                         'variable_integral'=>$distribution_integral,
                         'stable_integral'=>$m_increase_integral,
-                        'variable_estimate_integral'=>$distribution_integral,
+                        'variable_estimate_integral'=>-$distribution_integral,
                         'stable_estimate_integral'=>$estimate_integral,
-                        'type'=>0,
+                        'type'=>$type,
                         'add_time'=>time(),
                         'invite_id'=>$declaration_info['member_id']
                     );
@@ -143,8 +145,10 @@ class distributionLogic
             if ($i == 0){
                 $level[$i] = 'member_id';
                 $integral = $deduction_integral;
+                $type = 1;
             }else{
                 $integral = $superior_deduction_integral;
+                $type = 7;
             }
             if (!empty($declaration_info[$level[$i]])){
                 $sup_menber_declaration_info = $model_declaration_form->getMenberDeclarationFromInfo($declaration_info[$level[$i]]);
@@ -153,9 +157,11 @@ class distributionLogic
                     Model('declaration_form')->editDeclarationFrom(array('id'=>$sup_menber_declaration_info['id']),array('estimate_integral'=>$estimate_integral));
                     $log = array(
                         'member_id'=>$sup_menber_declaration_info['member_id'],
-                        'variable_estimate_integral'=>$integral,
+                        'variable_integral'=>0,
+                        'stable_integral'=>$sup_menber_declaration_info['m_integral'],
+                        'variable_estimate_integral'=>-$integral,
                         'stable_estimate_integral'=>$estimate_integral,
-                        'type'=>1,
+                        'type'=>$type,
                         'add_time'=>time(),
                         'invite_id'=>$declaration_info['member_id']
                     );

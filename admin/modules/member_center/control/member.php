@@ -27,7 +27,6 @@ class memberControl extends SystemControl {
 	 * @return [type] [description]
 	 */
 	public function member_editOp() {
-//	    var_dump($_POST);die();
 		if (chksubmit()) {
 			$validate = new Validate();
 			$validate->validateparam = array();
@@ -62,30 +61,19 @@ class memberControl extends SystemControl {
 			}
 			$update_data['member_name'] = trim($_POST['member_name']);
 			$update_data['member_state'] = $_POST['member_state'];
+			$update_data['member_level'] = $_POST['member_level'];
 			$update = Model('member')->editMember(array('member_id' => $member_id), $update_data);
 			if ($update) {
-                if (isset($_POST['member_level'])){
-                    $member_level = $_POST['member_level'];
-                    $member_level_update = Model('member_extend')->editMemberLevel(array('me_member_id' => $member_id),array('member_level'=>$member_level));
-                    if ($member_level_update){
-                        showMessage('会员编辑成功', 'index.php?act=member&op=member_manage', '', 'succ');
-                    }else{
-                        echo 111;
-                        showMessage('会员编辑失败', '', '', 'error');
-                    }
-                }
-			} else {
+                showMessage('会员编辑成功', 'index.php?act=member&op=member_manage', '', 'succ');
+            } else {
 				showMessage('会员编辑失败', '', '', 'error');
 			}
 		} else {
 			$member_id = intval(trim($_GET['member_id']));
 			if ($member_id) {
-				$model_member_extend = Model('member_extend');
-				$mobile_arr = $model_member_extend->getMemberMobileArr();
-				$fields = 'member_name,member_mobile,invite_id,access_id,member_state,member_id,member_level';
-				$info = $model_member_extend->getMemberExtendInfo(array('member_id' => $member_id), $fields, 'union');
-//				var_dump($info);die();
-				Tpl::output('mobilearr', $mobile_arr);
+				$model_member = Model('member');
+				$info = $model_member->getMemberInfo(array('member_id'=>$member_id));
+
 				Tpl::output('info', $info);
 				Tpl::setDirquna('member_center');
 				Tpl::showpage('member.member_edit');
@@ -98,54 +86,12 @@ class memberControl extends SystemControl {
 	 * @return [type] [description]
 	 */
 	public function member_addOp() {
-//	    var_dump($_POST);die();
 		if (chksubmit()) {
 			$model_member_extend = Model('member_extend');
-			$member_invite = trim($_POST['member_invite']);
-//			$member_access = trim($_POST['member_access']);
-			$invite_info = $model_member_extend->getMemberExtendInfo(array('member_mobile' => $member_invite), '*', 'union');
-			if (empty($invite_info)) {
-				showMessage('邀请人未注册', '', '', 'error');
-			}
             //开始扩大范围
             $record = Model('red_expand_area_record');
             $the_scope=Model('red_expand_the_scope');
             $member=Model('member');
-            $member_id['member_mobile']=trim($_POST['member_invite']);
-            $MemberInfo=$member->getMemberInfo($member_id);
-            $condition=$MemberInfo['member_id'];
-            $where['member_id']=$MemberInfo['member_id'];
-            $member_select=$model_member_extend->getChildInfoArr($condition);
-            $member_count=count($member_select);
-            $result=$the_scope->red_getRow('1');
-            $record_select=$record->getPdRechargeList($condition);
-            $record_count=count($record_select);
-            $count=floor($member_count/$result['recommended_registration']);
-            //是否达到扩大范围的条件
-            if($count>$record_count){
-                $where_data['member_id']=$where['member_id'];//用户ID
-                $where_data['extended_range_num']=$result['add_red_envelopes_range'];//扩大范围数量（公里）
-                $where_data['add_redbag_num']=$result['add_red_envelopes_num'];//增加红包数
-                $where_data['addtime']=time();//添加时间
-                $where_data['user_num']=$member_count;//添加时间
-                //増加扩大范围
-                $record->getexpandadd($where_data);
-            }
-//			$access_info = $model_member_extend->getMemberExtendInfo(array('member_mobile' => $member_access), '*', 'union');
-//			if (empty($access_info)) {
-//				showMessage('接点人未注册', '', '', 'error');
-//			}
-//			$count = $model_member_extend->getMemberAccessCount($access_info['member_id']);
-//			if ($count >= 2) {
-//				showMessage('此接点人已接满,请更换接点人', '', '', 'error');
-//			}
-			//判断接点人是否跟推荐人在同一区域
-//			$children_list = $this->get_children_id($invite_info['member_id']);
-//			if ($access_info['member_mobile'] != $invite_info['member_mobile']) {
-//				if (!in_array($access_info['member_mobile'], $children_list)) {
-//					responseApiJson(0, '接点人跟推荐人不在同一区域');
-//				}
-//			}
             $model_setting = Model('setting');
             $where_name['name']='default_user_portrait';
             $setting_data=$model_setting->getRowSetting($where_name);
@@ -155,17 +101,9 @@ class memberControl extends SystemControl {
 			$register_data['member_mobile'] = trim($_POST['member_mobile']);
 			$register_data['password'] = trim($_POST['member_password']);
 			$register_data['password_confirm'] = trim($_POST['member_password_confirm']);
-			$register_data['inviter_id'] = $invite_info['member_id'];
-			$register_data['invite_one'] = $invite_info['member_id'];
-			$register_data['invite_two'] = $invite_info['invite_one'];
-			$register_data['invite_three'] = $invite_info['invite_two'];
-			$register_data['invite_id'] = $invite_info['member_id'];
-//			$register_data['access_id'] = $access_info['member_id'];
-            $register_data['member_level'] = trim($_POST['member_level']);
+            $register_data['member_level'] = trim($_POST['customer_level']);
 			$register_data['left_right_area'] = 0;
-//			$register_data['depth'] = $access_info['depth'] + 1;
 			$result = $model_member_extend->memberRegister($register_data, false);
-//			var_dump($result);die();
 			if (isset($result['error'])) {
 				showMessage('会员添加失败', '', '', 'error');
 			} else {
@@ -199,14 +137,11 @@ class memberControl extends SystemControl {
 	 * @return [type] [description]
 	 */
 	public function get_xmlOp() {
-		$model_member_extend = Model('member_extend');
-		$member_model = Model('member');
-		$each_member_level_num = $member_model->getMemberLevelNum();
+		$model_declaration_form = Model('declaration_form');
 		$condition = array();
 		$this->_get_condition($condition);
 
 		$order = '';
-		$order_member_extend = '';
 		$param_member = array('member_id', 'member_name', 'member_mobile', 'member_time', 'member_login_time');
 		$param_member_extend = array('member_golden_bean', 'member_golden_bean_payed', 'member_equity', 'total_performance', 'new_performance', 'surplus_performance', 'day_total_consume', 'total_consume', 'depth','member_level');
 		if (in_array($_POST['sortname'], $param_member) && in_array($_POST['sortorder'], array('asc', 'desc'))) {
@@ -216,30 +151,23 @@ class memberControl extends SystemControl {
 		}
 
 		$page = $_POST['rp'];
-		$member_list = $model_member_extend->getMemberExtendList($condition, '*', 'union', $page, $order);
+		$member_list = $model_declaration_form->getMemberDeclarationList($condition, 'member.*,declaration_form.inviter_id', $page, $order);
 		$data = array();
-		$data['now_page'] = $model_member_extend->shownowpage();
-		$data['total_num'] = $model_member_extend->gettotalnum();
+		$data['now_page'] = $model_declaration_form->shownowpage();
+		$data['total_num'] = $model_declaration_form->gettotalnum();
 
 		foreach ($member_list as $v) {
 			$param = array();
-			$encrypt = encrypt($v['member_id']);
 			$param['operation'] = "<a class='btn blue' href='index.php?act=member&op=member_edit&member_id=" . $v['member_id'] . "'><i class='fa fa-pencil-square-o'></i>编辑</a>";
 			$param['member_mobile'] = $v['member_mobile'];
 			$param['member_name'] = $v['member_name'];
-			$param['invite_mobile'] = Model('member')->getMemberMobileById($v['invite_id']);
-//			$param['access_mobile'] = Model('member')->getMemberMobileById($v['access_id']);
+			$param['invite_mobile'] = Model('member')->getMemberMobileById($v['inviter_id']);
 			$param['member_time'] = date('Y-m-d H:i:s', $v['member_time']);
 			$param['member_state'] = str_replace(array(0,1), array('冻结', '正常'), $v['member_state']);
-			$param['member_level'] = str_replace(array(0,1,2,3,4,5), array('体验用户','VIP','店主','合伙人','高级合伙人','战略合伙人'), $v['member_level']);
+			$param['member_level'] = str_replace(array(0,1,2), array('普通用户','普通会员','创客VIP'), $v['member_level']);
 			$param['invite_family_tree'] = "<a class='btn blue' href='index.php?act=member&op=invite_family_tree&mobile=" . $v['member_mobile'] . "'><i class='fa fa-pencil-square-o'></i>推荐族谱图</a>";
-//			$param['access_family_tree'] = "<a class='btn blue' href='index.php?act=member&op=access_family_tree&mobile=" . $v['member_mobile'] . "'><i class='fa fa-pencil-square-o'></i>接点族谱图</a>";
-//			$param['direct_login'] = "<a class='btn blue' target='_bank' href=" . MEMBER_SYSTEM_SITE_URL . DS . "index.php?act=member_info&op=index&flag=direct_login&member_id=" . $v['member_id'] . "&encrypt=" . $encrypt . "><i class='fa fa-pencil-square-o'></i>账号登录</a>";
 			$data['list'][$v['member_id']] = $param;
-//            var_dump($v['member_level']);
         }
-//        $data['level_num'] = $each_member_level_num;
-//        die();
 		Tpl::flexigridXML($data);
 		exit();
 	}
@@ -307,7 +235,7 @@ class memberControl extends SystemControl {
 	 * @return [type] [description]
 	 */
 	public function export_xlsOp() {
-		$model_member_extend = Model('member_extend');
+        $model_declaration_form = Model('declaration_form');
 		$id = $_GET['id'];
 		$condition = array();
 		if ($id) {
@@ -315,7 +243,7 @@ class memberControl extends SystemControl {
 		} else {
 			$this->_get_condition($condition);
 		}
-		$data = $model_member_extend->getMemberExtendList($condition, '*', 'union', null, 'me_member_id desc', false);
+        $data = $model_declaration_form->getMemberDeclarationList($condition, 'member.*,declaration_form.inviter_id');
 		$excel_obj = new Excel();
 		$excel_data = array();
 		// 设置样式
@@ -325,7 +253,6 @@ class memberControl extends SystemControl {
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员手机');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员名字');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '推荐人手机');
-//		$excel_data[0][] = array('styleid' => 's_title', 'data' => '接点人手机');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '注册时间');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员等级');
 		$excel_data[0][] = array('styleid' => 's_title', 'data' => '会员状态');
@@ -337,7 +264,7 @@ class memberControl extends SystemControl {
 			$tmp[] = array('data' => $v['member_name']);
 			$tmp[] = array('data' => Model('member')->getMemberMobileById($v['invite_id']));
 			$tmp[] = array('data' => date('Y-m-d H:i:s', $v['reg_time']));
-            $tmp[] = array('data' =>str_replace(array(0,1,2,3,4,5), array('体验用户','VIP','店主','合伙人','高级合伙人','战略合伙人'), $v['member_level']));
+            $tmp[] = array('data' =>str_replace(array(0,1,2), array('普通用户','普通会员','创客VIP'), $v['member_level']));
             $tmp[] = array('data' =>str_replace(array(0,1), array('冻结', '正常'), $v['member_state']));
 			$excel_data[] = $tmp;
 		}
@@ -405,7 +332,9 @@ class memberControl extends SystemControl {
 	 */
 	public function get_invite_listOp() {
 		$member_id = trim($_GET['member_id']);
-		$invite_list = Model('member_extend')->getMemberExtendList(array('invite_id' => $member_id), '*', 'union', null, 'reg_time desc');
+		//$invite_list = Model('member_extend')->getMemberExtendList(array('invite_id' => $member_id), '*', 'union', null, 'reg_time desc');
+
+        $invite_list = Model('declaration_form')->getMenberDeclarationFromInfo($member_id,2);
 		echo json_encode($invite_list);
 	}
 
@@ -517,7 +446,7 @@ class memberControl extends SystemControl {
 						$arr[] = $v['member_id'];
 					}
 					if ($param['qtype'] == 'invite_mobile') {
-						$condition['invite_id'] = array('in', $arr);
+						$condition['declaration_form.inviter_id'] = array('in', $arr);
 					} else {
 						$condition['access_id'] = array('in', $arr);
 					}

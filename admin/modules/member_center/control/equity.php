@@ -1,6 +1,6 @@
 <?php
 /**
- * 股权管理
+ * 积分互赠管理
  *
  */
 defined('In33hao') or exit('Access Invild!');
@@ -18,7 +18,7 @@ class equityControl extends SystemControl
     }
 
     /**
-     * equity_manageOp 股权管理
+     * equity_manageOp 积分互赠管理
      * @return [type] [description]
      */
     public function equity_manageOp()
@@ -29,7 +29,7 @@ class equityControl extends SystemControl
     }
 
     /**
-     * get_xmlOp 获取股权日志
+     * get_xmlOp 获取积分互赠日志
      * @return [type] [description]
      */
     public function get_xmlOp()
@@ -77,7 +77,7 @@ class equityControl extends SystemControl
 
 
     /**
-     * 股权审核
+     * 积分互赠审核
      */
     public function equity_examineOp()
     {
@@ -89,7 +89,7 @@ class equityControl extends SystemControl
         try {
             $res = Model('equity')->editEquityLog($condition, $data);
             if ($res) {
-                //增加会员股权
+                //增加会员积分互赠
                 $add_data = Model('equity')->getEquityLogInfo(array('elg_id' => $elg_id), 'elg_member_id,elg_amount');
                 $change_equity_res = Model('member_extend')->setIncMemberExtendField(array('me_member_id' => $add_data['elg_member_id']), array('member_equity' => $add_data['elg_amount']));
             }
@@ -102,7 +102,7 @@ class equityControl extends SystemControl
     }
 
     /**
-     * 股权拒绝
+     * 积分互赠拒绝
      */
     public function equity_refuseOp()
     {
@@ -169,8 +169,8 @@ class equityControl extends SystemControl
         }
         $excel_data = $excel_obj->charset($excel_data, CHARSET);
         $excel_obj->addArray($excel_data);
-        $excel_obj->addWorksheet($excel_obj->charset('股权管理', CHARSET));
-        $excel_obj->generateXML($excel_obj->charset('股权管理', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
+        $excel_obj->addWorksheet($excel_obj->charset('积分互赠管理', CHARSET));
+        $excel_obj->generateXML($excel_obj->charset('积分互赠管理', CHARSET) . $_GET['curpage'] . '-' . date('Y-m-d-H', time()));
     }
 
     /**

@@ -137,7 +137,7 @@ class accountControl extends SystemControl {
             $fields = 'member_id,member_name,balance,member_equity,member_golden_bean_payed,member_golden_bean_freeze,member_silver_bean,member_silver_bean_payed';
             $info = $model_member_extend->getMemberExtendInfo(array('member_mobile' => $member_mobile), $fields, 'union');
             if (!empty($info)) {
-                $integral_total = Model('declaration_form')->getIntegralTotal(2,$info['member_id']);
+                $integral_total = Model('declaration_form')->getIntegralTotal($info['member_id'],2);
 				echo json_encode(array('id' => $info['member_id'], 'name' => $info['member_name'], 'balance' => $integral_total['m_integral'], 'equity' => $integral_total['estimate_integral'], ));
             } else {
                 echo "";

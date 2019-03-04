@@ -24,17 +24,14 @@ class memberModel extends Model {
     public function getMemberLevelNum($level = null) {
 
         if (!($level === null)){
-            $res = $this->table('member_extend')->where(['member_level'=>$level])->count();
+            $res = $this->table('member')->where(['member_level'=>$level])->count();
         }else{
-            $data = $this->table('member_extend')->field("count(*) as count,member_level")->group('member_level')->select();
+            $data = $this->table('member')->field("count(*) as count,member_level")->group('member_level')->select();
             $data = array_column($data,'count','member_level');
             $arr_ = [
-                0 => 'experience',//体验用户
-                1 => 'vip',//VIP
-                2 => 'shopkeeper',//店主
-                3 => 'partner',//合伙人
-                4 => 'senior_partner',//高级合伙人
-                5 => 'strategic_partner',//战略合伙人
+                0 => 'ordinary_user',//普通用户
+                1 => 'ordinary_member',//普通会员
+                2 => 'vip',//VIP
             ];
             $res = null;
             foreach ($arr_ as $k => $v){

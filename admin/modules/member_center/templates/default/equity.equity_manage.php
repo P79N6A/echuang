@@ -2,8 +2,8 @@
 	<div class="fixed-bar">
       <div class="item-title">
           <div class="subject">
-            <h3>股权管理</h3>
-            <h5>会员系统会员账户信息设置管理</h5>
+            <h3>积分互赠管理</h3>
+            <h5>会员系统积分互赠管理</h5>
           </div><?php echo $output['top_link']; ?>
       </div>
     </div>
@@ -15,51 +15,51 @@
           <span id="explanationZoom" title="收起提示"></span>
         </div>
       <ul>
-          <li>通过会员管理，你可以进行查看、编辑会员资料等操作</li>
-          <li>你可以根据条件搜索会员，然后选择相应的操作</li>
+          <li>通过积分互赠管理，你可以进行查看所有会员的积分互赠情况</li>
+          <li>你可以根据条件搜索，然后选择相应的操作</li>
       </ul>
     </div>
     <div id="flexigrid"></div>
-    <div class="ncap-search-ban-s" id="searchBarOpen"><i class="fa fa-search-plus"></i>高级搜索</div>
-    <div class="ncap-search-bar">
-        <div class="handle-btn" id="searchBarClose"><i class="fa fa-search-minus"></i>收起边栏</div>
-        <div class="title">
-            <h3>高级搜索</h3>
-        </div>
-        <form method="get" name="formSearch" id="formSearch">
-            <div id="searchCon" class="content">
-                <div class="layout-box">
-                    <dl>
-                        <dt>关键字搜索</dt>
-                        <dd>
-                            <label>
-                                <select class="s-select" name="keyword_type">
-                                    <option selected="selected" value="">-请选择-</option>
-                                    <option value="member_mobile">会员手机</option>
-                                    <option value="member_name">会员姓名</option>
-                                </select>
-                            </label>
-                            <label>
-                                <input type="text" value="" placeholder="请输入关键字" name="keyword" class="s-input-txt">
-                            </label>
-                        </dd>
-                    </dl>
-                    <dl>
-                        <dt>时间</dt>
-                        <dd>
-                            <label>
-                                <input readonly id="query_start_date" placeholder="请选择起始时间" name=query_start_date value="" type="text" class="s-input-txt" />
-                            </label>
-                            <label>
-                                <input readonly id="query_end_date" placeholder="请选择结束时间" name="query_end_date" value="" type="text" class="s-input-txt" />
-                            </label>
-                        </dd>
-                    </dl>
-                </div>
-            </div>
-            <div class="bottom"><a href="javascript:void(0);" id="ncsubmit" class="ncap-btn ncap-btn-green mr5">提交查询</a><a href="javascript:void(0);" id="ncreset" class="ncap-btn ncap-btn-orange" title="撤销查询结果，还原列表项所有内容"><i class="fa fa-retweet"></i><?php echo $lang['nc_cancel_search']; ?></a></div>
-        </form>
-    </div>
+<!--    <div class="ncap-search-ban-s" id="searchBarOpen"><i class="fa fa-search-plus"></i>高级搜索</div>-->
+<!--    <div class="ncap-search-bar">-->
+<!--        <div class="handle-btn" id="searchBarClose"><i class="fa fa-search-minus"></i>收起边栏</div>-->
+<!--        <div class="title">-->
+<!--            <h3>高级搜索</h3>-->
+<!--        </div>-->
+<!--        <form method="get" name="formSearch" id="formSearch">-->
+<!--            <div id="searchCon" class="content">-->
+<!--                <div class="layout-box">-->
+<!--                    <dl>-->
+<!--                        <dt>关键字搜索</dt>-->
+<!--                        <dd>-->
+<!--                            <label>-->
+<!--                                <select class="s-select" name="keyword_type">-->
+<!--                                    <option selected="selected" value="">-请选择-</option>-->
+<!--                                    <option value="member_mobile">会员手机</option>-->
+<!--                                    <option value="member_name">会员姓名</option>-->
+<!--                                </select>-->
+<!--                            </label>-->
+<!--                            <label>-->
+<!--                                <input type="text" value="" placeholder="请输入关键字" name="keyword" class="s-input-txt">-->
+<!--                            </label>-->
+<!--                        </dd>-->
+<!--                    </dl>-->
+<!--                    <dl>-->
+<!--                        <dt>时间</dt>-->
+<!--                        <dd>-->
+<!--                            <label>-->
+<!--                                <input readonly id="query_start_date" placeholder="请选择起始时间" name=query_start_date value="" type="text" class="s-input-txt" />-->
+<!--                            </label>-->
+<!--                            <label>-->
+<!--                                <input readonly id="query_end_date" placeholder="请选择结束时间" name="query_end_date" value="" type="text" class="s-input-txt" />-->
+<!--                            </label>-->
+<!--                        </dd>-->
+<!--                    </dl>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="bottom"><a href="javascript:void(0);" id="ncsubmit" class="ncap-btn ncap-btn-green mr5">提交查询</a><a href="javascript:void(0);" id="ncreset" class="ncap-btn ncap-btn-orange" title="撤销查询结果，还原列表项所有内容"><i class="fa fa-retweet"></i>--><?php //echo $lang['nc_cancel_search']; ?><!--</a></div>-->
+<!--        </form>-->
+<!--    </div>-->
 </div>
 <script type="text/javascript">
 $(function() {
@@ -68,12 +68,11 @@ $(function() {
         colModel : [
                {display: '操作', name: 'operation', width : 160, sortable : false, align: 'center'},
             {display: '会员手机', name: 'member_mobile', width : 130, sortable : false, align: 'center'},
-            {display: '会员姓名', name: 'elg_member_name', width : 120, sortable : false, align: 'center'},
-            {display: '单号', name: 'elg_sn', width : 160, sortable : false, align: 'center'},
-            {display: '类型', name: 'equity_type', width : 160, sortable : false, align: 'center'},
-            {display: '数量', name: 'elg_amount', width : 160, sortable : false, align: 'center'},
-            {display: '调整后数量', name: 'elg_equity_amount', width : 160, sortable : false, align: 'center'},
-            {display: '时间', name: 'elg_addtime', width : 160, sortable : false, align: 'center'},
+            {display: '转赠人', name: 'elg_sn', width : 160, sortable : false, align: 'center'},
+            {display: '接收人手机', name: 'equity_type', width : 160, sortable : false, align: 'center'},
+            {display: '接收人', name: 'elg_amount', width : 160, sortable : false, align: 'center'},
+            {display: '数量', name: 'elg_equity_amount', width : 160, sortable : false, align: 'center'},
+            {display: '转赠时间', name: 'elg_addtime', width : 160, sortable : false, align: 'center'},
             {display: '备注', name: 'equity_desc', width : 160, sortable : false, align: 'center'},
         ],
         buttons : [
@@ -82,11 +81,10 @@ $(function() {
         searchitems: [
             {display: '会员手机', name : 'member_mobile'},
             {display: '会员姓名', name: 'elg_member_name'},
-            {display: '单号', name: 'elg_sn'},
         ],
         sortname: "elg_addtime",
         sortorder: "desc",
-        title: '股权管理列表'
+        title: '积分互赠管理列表'
     });
 
 });

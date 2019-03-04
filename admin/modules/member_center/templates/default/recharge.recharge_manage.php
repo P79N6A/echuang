@@ -3,8 +3,8 @@
 	<div class="fixed-bar">
       <div class="item-title">
           <div class="subject">
-            <h3>充值管理</h3>
-            <h5>会员系统会员充值信息设置管理</h5>
+            <h3>积分交易管理</h3>
+            <h5>会员系统积分交易管理</h5>
           </div>
       </div>
     </div>
@@ -16,7 +16,7 @@
           <span id="explanationZoom" title="收起提示"></span>
         </div>
       <ul>
-          <li>通过会员管理，你可以进行查看、编辑会员资料等操作</li>
+          <li>通过积分挂卖交易管理，你可以进行查看所有会员的积分挂卖交易管理</li>
           <li>你可以根据条件搜索会员，然后选择相应的操作</li>
       </ul>
     </div>
@@ -28,15 +28,13 @@ $(function() {
         url: 'index.php?act=recharge&op=get_xml',
         colModel : [
             {display: '操作', name: 'operation', width : 100, sortable : false, align: 'center', className: 'handle-s'},
-            {display: '充值单号', name: 'rl_sn', width : 110, sortable : false, align: 'center'},
-            {display: '会员手机', name: 'member_mobile', width : 110, sortable : false, align: 'center'},
-            {display: '真实姓名', name: 'rl_member_name', width : 110, sortable : false, align: 'center'},
-            {display: '支付方式', name: 'rl_recharge_type', width : 110, sortable : false, align: 'center'},
-            {display: '充值账户', name: 'rl_account_type', width : 110, sortable : false, align: 'center'},
-            {display: '充值金额', name: 'rl_amount', width : 110, sortable : false, align: 'center'},
-            {display: '申请时间', name: 'rl_addtime', width : 110, sortable : false, align: 'center'},
-            {display: '支付时间', name: 'rl_paytime', width : 110, sortable : false, align: 'center'},
-            {display: '状态', name: 'rl_state', width : 50, sortable : false, align: 'center'},
+            {display: '会员手机', name: 'member_mobile', width : 120, sortable : false, align: 'center'},
+            {display: '真实姓名', name: 'rl_member_name', width : 120, sortable : false, align: 'center'},
+            {display: '单号', name: 'rl_recharge_type', width : 150, sortable : false, align: 'center'},
+            {display: '状态', name: 'rl_account_type', width : 100, sortable : false, align: 'center'},
+            {display: '数量', name: 'rl_amount', width : 100, sortable : false, align: 'center'},
+            {display: '挂卖时间', name: 'rl_addtime', width : 150, sortable : false, align: 'center'},
+            {display: '回购/拒绝时间', name: 'rl_paytime', width : 150, sortable : false, align: 'center'},
         ],
         buttons : [
             {display: '<i class="fa fa-file-excel-o"></i>导出数据', name : 'xls', bclass : 'xls', title : '将选定行数据导出execl文件', onpress : fg_operation }
@@ -48,7 +46,7 @@ $(function() {
         ],
         sortname: "total_consume",
         sortorder: "desc",
-        title: '帐户管理列表'
+        title: '积分交易管理列表'
     });
 
 });

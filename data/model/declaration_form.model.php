@@ -153,12 +153,17 @@ class declaration_formModel extends Model {
     /**
      * 获取会员报单信息
      * @param int $member_id 会员id
+     * @param int $type  类型 1、获取会员信息；2、获取下级会员信息
      * @return array
      */
-    public function getMenberDeclarationFromInfo($member_id){
-        $where = ' member_id = \''.$member_id.'\' and integral_end_time > \''.time().'\' and state = 0 ';
-        $data =  $this->table('member_declaration')->where($where)->find();
-
+    public function getMenberDeclarationFromInfo($member_id,$type = 1){
+        if ($type == 1){
+            $where = ' member_id = \''.$member_id.'\' and integral_end_time > \''.time().'\' and state = 1 ';
+            $data =  $this->table('member_declaration')->where($where)->find();
+        }else{
+            $where = ' inviter_id = \''.$member_id.'\' and integral_end_time > \''.time().'\' and state = 1 ';
+            $data =  $this->table('member_declaration')->field('*,member_name as member_truename')->where($where)->select();
+        }
         return $data;
     }
 
@@ -175,6 +180,7 @@ class declaration_formModel extends Model {
             ->join('left')
             ->on('member.member_id = declaration_form.member_id')
             ->page($page)
+            ->order($order)
             ->limit($limit)
             ->select();
     }
@@ -200,16 +206,63 @@ class declaration_formModel extends Model {
      * @param int $member_id 类型
      * @return array
      */
-    public function getIntegralTotal($type = 1,$member_id = 0)
+    public function getIntegralTotal($member_id = 0,$type = 1)
     {
         if ($type==1){
             $where = ' state = 1 ';
             $data =  $this->table('member_declaration')->field('SUM(m_integral) as integral_total,SUM(estimate_integral) as estimate_integral_total')->where($where)->find();
         }else{
             $where = ' member_id = \''.$member_id.'\' and state = 1 ';
-            $data =  $this->table('member_declaration')->field('m_integral,estimate_integral')->where($where)->find();
+            $data =  $this->table('member_declaration')->field('*')->where($where)->find();
         }
         return $data;
+    }
+
+    /**
+     * 会员积分调整
+     * @param int $member_id    用户id
+     * @param int $account_type 调整类型  1、积分 2、预期积分
+     * @param int $operate_type 增减类型  1、增加 2、减少
+     * @param int $amount       调整数量
+     * @param int $info         会员信息
+     * @param int $remarks      备注
+     * @param int $type         类型
+     * @return bool
+     */
+    public function changeMemberIntegral($member_id,$account_type,$operate_type,$amount,$info,$remarks,$type)
+    {
+        $amount = ($operate_type == 2)?-$amount:$amount;
+        if ($account_type == 1){
+            $sql = 'UPDATE red_member set integral = integral + '.$amount.' WHERE member_id = '.$member_id;
+            $result = $this->execute($sql);
+            $variable_integral = $amount;
+            $stable_integral = $info['m_integral']+$amount;
+            $variable_estimate_integral = 0;
+            $stable_estimate_integral = $info['estimate_integral'];
+        }
+        elseif ($account_type == 2){
+            $sql = 'UPDATE red_declaration_form set estimate_integral = estimate_integral + '.$amount.' WHERE state = 1 AND member_id = '.$member_id;
+            $result = $this->execute($sql);
+            $variable_integral = 0;
+            $stable_integral = $info['m_integral'];
+            $variable_estimate_integral = $amount;
+            $stable_estimate_integral = $info['estimate_integral']+$amount;
+        }
+        if ($result){
+            $log = array(
+                'member_id'=>$member_id,
+                'variable_integral'=>$variable_integral,
+                'stable_integral'=>$stable_integral,
+                'variable_estimate_integral'=>$variable_estimate_integral,
+                'stable_estimate_integral'=>$stable_estimate_integral,
+                'type'=>9,
+                'add_time'=>time(),
+                'invite_id'=>$type,
+                'remarks'=>$remarks,
+            );
+            Model('member_integral_log')->addMemberIntegralLog($log);
+        }
+        return $result;
     }
 
 }

@@ -63,8 +63,8 @@ class sns_friendModel extends Model {
     /**
      * 获取好友详细
      *
-     * @param $condition 查询条件
-     * @param $field 查询字段
+     * @param array $condition 查询条件
+     * @param string $field 查询字段
      */
     public function getFriendRow($condition,$field='*'){
         $param = array();
@@ -84,8 +84,8 @@ class sns_friendModel extends Model {
     }
     /**
      * 更新好友信息
-     * @param $param 更新内容
-     * @param $condition 更新条件
+     * @param array $param 更新内容
+     * @param array $condition 更新条件
      */
     public function editFriend($param,$condition) {
         if(empty($param)) {
@@ -103,6 +103,7 @@ class sns_friendModel extends Model {
         if (empty($condition)){
             return false;
         }
+        $condition_str = '';
         if ($condition['friend_frommid'] != ''){
             $condition_str .= " and friend_frommid='{$condition['friend_frommid']}' ";
         }
