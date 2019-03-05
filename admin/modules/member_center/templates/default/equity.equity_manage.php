@@ -67,13 +67,13 @@ $(function() {
         url: 'index.php?act=equity&op=get_xml',
         colModel : [
                {display: '操作', name: 'operation', width : 160, sortable : false, align: 'center'},
-            {display: '会员手机', name: 'member_mobile', width : 130, sortable : false, align: 'center'},
-            {display: '转赠人', name: 'elg_sn', width : 160, sortable : false, align: 'center'},
-            {display: '接收人手机', name: 'equity_type', width : 160, sortable : false, align: 'center'},
-            {display: '接收人', name: 'elg_amount', width : 160, sortable : false, align: 'center'},
-            {display: '数量', name: 'elg_equity_amount', width : 160, sortable : false, align: 'center'},
-            {display: '转赠时间', name: 'elg_addtime', width : 160, sortable : false, align: 'center'},
-            {display: '备注', name: 'equity_desc', width : 160, sortable : false, align: 'center'},
+            {display: '转赠人手机', name: 'member_mobile', width : 130, sortable : false, align: 'center'},
+            {display: '转赠人', name: 'member_name', width : 160, sortable : false, align: 'center'},
+            {display: '接收人手机', name: 'receiver_mobile', width : 160, sortable : false, align: 'center'},
+            {display: '接收人', name: 'receiver_name', width : 160, sortable : false, align: 'center'},
+            {display: '数量', name: 'integral', width : 160, sortable : false, align: 'center'},
+            {display: '转赠时间', name: 'add_time', width : 160, sortable : false, align: 'center'},
+            {display: '备注', name: 'remarks', width : 160, sortable : false, align: 'center'},
         ],
         buttons : [
             {display: '<i class="fa fa-file-excel-o"></i>导出数据', name : 'xls', bclass : 'xls', title : '将选定行数据导出execl文件', onpress : fg_operation }

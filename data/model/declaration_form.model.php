@@ -209,10 +209,9 @@ class declaration_formModel extends Model {
     public function getIntegralTotal($member_id = 0,$type = 1)
     {
         if ($type==1){
-            $where = ' state = 1 ';
-            $data =  $this->table('member_declaration')->field('SUM(m_integral) as integral_total,SUM(estimate_integral) as estimate_integral_total')->where($where)->find();
+            $data =  $this->table('member_declaration')->field('SUM(m_integral) as integral_total,SUM(estimate_integral) as estimate_integral_total')->find();
         }else{
-            $where = ' member_id = \''.$member_id.'\' and state = 1 ';
+            $where = ' member_id = \''.$member_id.'\' ';
             $data =  $this->table('member_declaration')->field('*')->where($where)->find();
         }
         return $data;
@@ -227,11 +226,23 @@ class declaration_formModel extends Model {
      * @param int $info         会员信息
      * @param int $remarks      备注
      * @param int $type         类型
+     * @param int $invite_id    上下级ID/转赠人ID
      * @return bool
      */
-    public function changeMemberIntegral($member_id,$account_type,$operate_type,$amount,$info,$remarks,$type)
+    public function changeMemberIntegral($member_id,$account_type,$operate_type,$amount,$info,$remarks,$type,$invite_id = 0)
     {
-        $amount = ($operate_type == 2)?-$amount:$amount;
+        if ($operate_type == 2){
+            if ($account_type == 1 && $info['m_integral']<$amount){
+                //会员积分不足
+                return false;
+            }
+            elseif($account_type == 2 && $info['estimate_integral']<$amount){
+                //会员预期积分不足
+                return false;
+            }
+            $amount = -$amount;
+        }
+        $info['estimate_integral'] = $info['estimate_integral']?$info['estimate_integral']:0;
         if ($account_type == 1){
             $sql = 'UPDATE red_member set integral = integral + '.$amount.' WHERE member_id = '.$member_id;
             $result = $this->execute($sql);
@@ -255,9 +266,9 @@ class declaration_formModel extends Model {
                 'stable_integral'=>$stable_integral,
                 'variable_estimate_integral'=>$variable_estimate_integral,
                 'stable_estimate_integral'=>$stable_estimate_integral,
-                'type'=>9,
+                'type'=>$type,
                 'add_time'=>time(),
-                'invite_id'=>$type,
+                'invite_id'=>$invite_id,
                 'remarks'=>$remarks,
             );
             Model('member_integral_log')->addMemberIntegralLog($log);

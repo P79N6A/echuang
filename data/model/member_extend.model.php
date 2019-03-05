@@ -1196,7 +1196,8 @@ class member_extendModel extends Model {
 		process::addprocess('login');
 		$member_mobile = $login_info['member_mobile'];
 		$member_pwd = $login_info['member_pwd'];
-		$fields = 'member_mobile,member_id,member_name,member_passwd,member_paypwd,member_state,member_login_time,member_login_num,member_login_ip,member_avatar,RCtoken';
+		//$fields = 'member_mobile,member_id,member_name,member_passwd,member_paypwd,member_state,member_login_time,member_login_num,member_login_ip,member_avatar,RCtoken';
+		$fields = '*';
 		$info = Model('member')->getMemberInfo(array('member_mobile' => $member_mobile), $fields);
 		if (empty($info)) {
 			return array('error' => "账号不存在");

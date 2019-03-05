@@ -35,7 +35,9 @@ class member_system_editControl extends SystemControl
             $data['f_reward_integral'] = intval(trim($_POST['f_reward_integral']));
             $data['f_deduction_integral'] = intval(trim($_POST['f_deduction_integral']));
             $data['f_superior_deduction_integral'] = intval(trim($_POST['f_superior_deduction_integral']));
+            $data['f_service_standard'] = intval(trim($_POST['f_service_standard']));
             $data['f_service_charge'] = intval(trim($_POST['f_service_charge']));
+            $data['f_vip_service_standard'] = intval(trim($_POST['f_vip_service_standard']));
             $data['f_vip_service_charge'] = intval(trim($_POST['f_vip_service_charge']));
             $result = $model_setting->updateSetting($data);
             if ($result) {

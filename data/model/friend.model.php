@@ -79,4 +79,17 @@ class friendModel extends Model {
             return false;
         }
     }
+
+    /**
+     * 字段自增
+     * @param string $field 字段名
+     * @param string $where 条件
+     * @param string $num   增加数量
+     * @return bool
+     */
+    public function incrementField($field,$where,$num)
+    {
+        $sql = 'UPDATE red_friend SET '.$field.' = '.$field.' + '.$num.' WHERE '.$where;
+        return $this->query($sql);
+    }
 }

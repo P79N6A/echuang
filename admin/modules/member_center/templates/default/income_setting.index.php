@@ -75,6 +75,15 @@
 
             <dl class="row">
                 <dt class="tit">
+                    <label for="f_service_standard">会员挂卖最低标准：</label>
+                </dt>
+                <dd class="opt">
+                    <input class="w65" id="f_service_standard" name="f_service_standard" value="<?php echo $output['s_info']['f_service_standard'] ? $output['s_info']['f_service_standard'] : 100; ?>" class="input-txt" type="text">　分
+                    <p class="notic">会员挂卖积分的最低标准，如最低挂卖100积分，每次只能按100的整数挂卖。</p>
+                </dd>
+            </dl>
+            <dl class="row">
+                <dt class="tit">
                     <label for="f_service_charge">会员挂卖手续费：</label>
                 </dt>
                 <dd class="opt">
@@ -83,6 +92,15 @@
                 </dd>
             </dl>
 
+            <dl class="row">
+                <dt class="tit">
+                    <label for="f_vip_service_standard">创客VIP最低标准：</label>
+                </dt>
+                <dd class="opt">
+                    <input class="w65" id="f_vip_service_standard" name="f_vip_service_standard" value="<?php echo $output['s_info']['f_vip_service_standard'] ? $output['s_info']['f_vip_service_standard'] : 1000; ?>" class="input-txt" type="text">　分
+                    <p class="notic">创客VIP挂卖积分的最低标准，如最低挂卖1000积分，每次只能按1000的整数挂卖。</p>
+                </dd>
+            </dl>
             <dl class="row">
                 <dt class="tit">
                     <label for="f_vip_service_charge">创客VIP挂卖手续费：</label>

@@ -16,8 +16,8 @@ class friendLogic
     public function addFriend($member_id,$friend_member_id,$state=1)
     {
         $model_friend = Model('friend');
-        $is_friend = $this->judgeFriend($member_id,$friend_member_id);
-        if ($is_friend != 3){
+        $friend = $this->judgeFriend($member_id,$friend_member_id);
+        if ($friend['is_friend'] == 3){
             $param = array(
                 'member_id'=>$member_id,
                 'friend_member_id'=>$friend_member_id,
@@ -35,29 +35,38 @@ class friendLogic
      * @param int $member_id 会员id
      * @param int $friend_member_id 好友id
      * @param float $integral 转赠积分
+     * @param string $remarks 转赠积分
      * @return bool
      */
-    public function giveFriendIngtegral($member_id,$friend_member_id,$integral)
+    public function giveFriendIngtegral($member_id,$friend_member_id,$integral,$remarks)
     {
         $model_friend = Model('friend');
         $model_declaration_form = Model('declaration_form');
-        $is_friend = $this->judgeFriend($member_id,$friend_member_id);
-        if ($is_friend == 1){
+        $friend = $this->judgeFriend($member_id,$friend_member_id);
+        if ($friend['is_friend'] == 1){
             $filed_name = 'give_integral';
         }
-        elseif($is_friend == 2){
+        elseif($friend['is_friend'] == 2){
             $filed_name = 'donate_integral';
         }
         else{
             return false;
         }
         $info1 = $model_declaration_form->getIntegralTotal($member_id,2);
-        $result1 = $model_declaration_form->changeMemberIntegral($member_id,1,2,$integral,$info1,'',5);
+        if ($info1['m_integral'] < $integral){
+            return false;
+        }
+        $result1 = $model_declaration_form->changeMemberIntegral($member_id,1,2,$integral,$info1,$remarks,5,$friend_member_id);
         $info2 = $model_declaration_form->getIntegralTotal($friend_member_id,2);
-        $result2 = $model_declaration_form->changeMemberIntegral($friend_member_id,1,1,$integral,$info2,'',6);
+        $result2 = $model_declaration_form->changeMemberIntegral($friend_member_id,1,1,$integral,$info2,$remarks,6,$member_id);
 
         if ($result1 && $result2){
             //修改好友
+            $where = ' id = '.$friend['id'];
+            $model_friend->incrementField($filed_name,$where,$integral);
+            return true;
+        }else{
+            return false;
         }
 
     }
@@ -74,14 +83,16 @@ class friendLogic
         $where = ' (member_id = \''.$member_id.'\' AND friend_member_id = \''.$friend_member_id.'\')  ';
         $is_friend_one = $model_friend->getFriendInfo($where);
         if ($is_friend_one){
-            $result = 1;
+            $result['is_friend'] = 1;
+            $result['id'] = $is_friend_one['id'];
         }else{
             $where = ' (friend_member_id = \''.$member_id.'\' AND member_id = \''.$friend_member_id.'\')  ';
             $is_friend_two = $model_friend->getFriendInfo($where);
             if ($is_friend_two){
-                $result = 2;
+                $result['is_friend'] = 2;
+                $result['id'] = $is_friend_two['id'];
             }else{
-                $result = 3;
+                $result['is_friend'] = 3;
             }
         }
 

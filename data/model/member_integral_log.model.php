@@ -21,6 +21,7 @@ define('MEMBER_INTEGRAL_LOG_TYPE_SIX', 6);
 define('MEMBER_INTEGRAL_LOG_TYPE_SEVEN', 7);
 define('MEMBER_INTEGRAL_LOG_TYPE_EIGHT', 8);
 define('MEMBER_INTEGRAL_LOG_TYPE_NINE', 9);
+define('MEMBER_INTEGRAL_LOG_TYPE_TEN', 10);
 
 class member_integral_logModel extends Model {
 
@@ -35,6 +36,7 @@ class member_integral_logModel extends Model {
         MEMBER_INTEGRAL_LOG_TYPE_SEVEN => '下级绩效考核扣除',
         MEMBER_INTEGRAL_LOG_TYPE_EIGHT => '激活会员奖励',
         MEMBER_INTEGRAL_LOG_TYPE_NINE => '后台调整',
+        MEMBER_INTEGRAL_LOG_TYPE_TEN => '其它',
     );
 
     public function __construct(){

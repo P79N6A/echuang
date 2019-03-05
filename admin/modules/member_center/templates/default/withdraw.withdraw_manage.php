@@ -67,14 +67,14 @@ $(function() {
     $("#flexigrid").flexigrid({
         url: 'index.php?act=withdraw&op=get_xml',
         colModel : [
-            {display: '操作', name: 'operation', width : 160, sortable : false, align: 'center'},
-            {display: '回购单号', name: 'member_mobile', width : 160, sortable : false, align: 'center'},
-            {display: '会员手机', name: 'member_name', width : 160, sortable : false, align: 'center'},
-            {display: '真实姓名', name: 'wl_sn', width : 160, sortable : false, align: 'center'},
-            {display: '被回购手机号', name: 'wl_account_bank_name', width : 160, sortable : false, align: 'center'},
-            {display: '被回购姓名', name: 'wl_account_branch', width : 160, sortable : false, align: 'center'},
-            {display: '数量', name: 'wl_account_name', width : 160, sortable : false, align: 'center'},
-            {display: '时间', name: 'wl_account_num', width : 160, sortable : false, align: 'center'}
+            {display: '操作', name: 'operation', width : 80, sortable : false, align: 'center'},
+            {display: '回购单号', name: 'sell_sn', width : 150, sortable : false, align: 'center'},
+            {display: '会员手机', name: 'sell_member_mobile', width : 120, sortable : false, align: 'center'},
+            {display: '真实姓名', name: 'sell_member_name', width : 120, sortable : false, align: 'center'},
+            {display: '被回购手机号', name: 'member_mobile', width : 120, sortable : false, align: 'center'},
+            {display: '被回购姓名', name: 'member_name', width : 120, sortable : false, align: 'center'},
+            {display: '回购积分', name: 'actual_integral', width : 100, sortable : false, align: 'center'},
+            {display: '时间', name: 'buy_time', width : 150, sortable : false, align: 'center'}
         ],
         buttons : [
             {display: '<i class="fa fa-file-excel-o"></i>导出数据', name : 'xls', bclass : 'xls', title : '将选定行数据导出execl文件', onpress : fg_operation }
@@ -82,7 +82,7 @@ $(function() {
         searchitems: [
             {display: '会员手机', name : 'member_mobile'},
             {display: '会员姓名', name: 'member_name'},
-            {display: '回购单号', name: 'wl_sn'},
+            {display: '回购单号', name: 'sell_sn'},
         ],
         sortname: "total_consume",
         sortorder: "desc",

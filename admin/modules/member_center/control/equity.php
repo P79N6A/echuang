@@ -23,7 +23,6 @@ class equityControl extends SystemControl
      */
     public function equity_manageOp()
     {
-
         Tpl::setDirquna('member_center');
         Tpl::showpage('equity.equity_manage');
     }
@@ -34,100 +33,32 @@ class equityControl extends SystemControl
      */
     public function get_xmlOp()
     {
-        $model_equity = Model('equity');
-        $condition = array();
+        $model_member_integral_log = Model('member_integral_log');
+        $model_member = Model('member');
+        $condition = array('type'=>5);
         $this->_get_condition($condition);
-        $order = 'elg_addtime desc';
+        $order = 'add_time desc';
         $page = $_POST['rp'];
-        $equity_list = $model_equity->getEquityLogList($condition, '*', $page, $order);
-        $equity_list_join = $model_equity->joinEquityListArr($equity_list);
-//		var_dump($equity_list_join);die();
+        $member_integral_log_list = $model_member_integral_log->getMemberIntegralLogList($condition, '*', $page, $order);
         $data = array();
-        $data['now_page'] = $model_equity->shownowpage();
-        $data['total_num'] = $model_equity->gettotalnum();
-        foreach ($equity_list_join as $v) {
+        $data['now_page'] = $model_member_integral_log->shownowpage();
+        $data['total_num'] = $model_member_integral_log->gettotalnum();
+        foreach ($member_integral_log_list as $v) {
             $param = array();
-            if ($v['elg_type'] == 'exchange') {
-                if ($v['elg_state'] != 0) {
-                    if ($v['elg_state'] == 1) {
-                        $param['operation'] = "<span style='color: #3AA55A;'>已审核</span>";
-                    } else {
-                        $param['operation'] = "<span style='color: #ff3c00;'>已拒绝</span>";
-                    }
-                } else {
-                    $param['operation'] = "<a class='btn blue' href='index.php?act=equity&op=equity_examine&id=" . $v['elg_id'] . "'><i class='fa fa-pencil-square-o'></i>审核</a><a class='btn blue' href='index.php?act=equity&op=equity_refuse&id=" . $v['elg_id'] . "'><i class='fa fa-pencil-square-o'></i>拒绝</a>";
-                }
-            } else {
-                $param['operation'] = "<span style='color: #3AA55A;'>已调整</span>";
-            }
-            $param['member_mobile'] = Model('member')->getMemberMobileById($v['elg_member_id']);
-            $param['elg_member_name'] = $v['elg_member_name'];
-            $param['elg_sn'] = $v['elg_sn'];
-            $param['equity_type'] = str_replace(array("admin", "exchange", "consume"), array("管理员调整", "兑换", "消费"), $v['elg_type']);
-            $param['elg_amount'] = $v['elg_amount'];
-            $param['elg_equity_amount'] = $v['elg_equity_amount'];
-            $param['elg_addtime'] = $v['elg_addtime'] ? date('Y-m-d H:i:s', $v['elg_addtime']) : '';
-            $param['equity_desc'] = $v['equity_desc'];
-            $data['list'][$v['elg_id']] = $param;
+            $member = $model_member->getMemberInfoByID($v['member_id']);
+            $receiver = $model_member->getMemberInfoByID($v['invite_id']);
+            $param['operation'] = "----";
+            $param['member_mobile'] = $member['member_mobile'];
+            $param['member_name'] = $member['member_name'];
+            $param['receiver_mobile'] = $receiver['member_mobile'];
+            $param['receiver_name'] = $receiver['member_name'];
+            $param['integral'] = abs($v['variable_integral']);
+            $param['add_time'] = $v['add_time'] ? date('Y-m-d H:i:s', $v['add_time']) : '';
+            $param['remarks'] = $v['remarks'];
+            $data['list'][$v['id']] = $param;
         }
-//            var_dump($data['list']);die();
         echo Tpl::flexigridXML($data);
         exit();
-    }
-
-
-    /**
-     * 积分互赠审核
-     */
-    public function equity_examineOp()
-    {
-        $elg_id = $_GET['id'];
-        $condition['elg_id'] = $elg_id;
-        $data['elg_state'] = 1;
-        $data['elg_paytime'] = time();
-        Model::beginTransaction();
-        try {
-            $res = Model('equity')->editEquityLog($condition, $data);
-            if ($res) {
-                //增加会员积分互赠
-                $add_data = Model('equity')->getEquityLogInfo(array('elg_id' => $elg_id), 'elg_member_id,elg_amount');
-                $change_equity_res = Model('member_extend')->setIncMemberExtendField(array('me_member_id' => $add_data['elg_member_id']), array('member_equity' => $add_data['elg_amount']));
-            }
-            Model::commit();
-            showMessage('审核通过', '', '', 'succ');
-        }catch (Exception $e){
-            showMessage('审核失败', '', '', 'error');
-            Model::rollback();
-        }
-    }
-
-    /**
-     * 积分互赠拒绝
-     */
-    public function equity_refuseOp()
-    {
-        $elg_id = $_GET['id'];
-        $condition['elg_id'] = $elg_id;
-        $data['elg_state'] = 2;
-        $data['elg_paytime'] = time();
-        Model::beginTransaction();
-        try{
-            $res = Model('equity')->editEquityLog($condition, $data);
-            if ($res) {
-                //退还会员余额
-                $add_data = Model('equity')->getEquityLogInfo(array('elg_id' => $elg_id), '*');
-                $data['member_id'] = $add_data['elg_member_id'];
-                $data['member_name'] = $add_data['elg_member_name'];
-                $data['balance_amount'] = -$add_data['elg_balance_amount'];
-                $data['member_id'] = $add_data['elg_member_id'];
-                $change_balance_res = Model('member_extend')->changeMemberBalance('equity',$data);
-                Model::commit();
-                showMessage('已拒绝', '', '', 'succ');
-            }
-        }catch (Exception $e){
-            Model::rollback();
-            showMessage('操作失败', '', '', 'error');
-        }
     }
 
     /**
@@ -136,35 +67,39 @@ class equityControl extends SystemControl
      */
     public function export_xlsOp()
     {
-        $condition = array();
+        $model_member_integral_log = Model('member_integral_log');
+        $model_member = Model('member');
+        $condition = array('type'=>5);
         $id = $_GET['id'];
         if ($id) {
-            $condition['elg_id'] = array('in', $id);
+            $condition['id'] = array('in', $id);
         } else {
             $this->_get_condition($condition);
         }
-        $data = Model('equity')->getEquityLogList($condition, '*', null, 'elg_addtime desc', false);
+        $data = $model_member_integral_log->getMemberIntegralLogList($condition, '*', null, 'add_time desc', false);
         $excel_obj = new Excel();
         $excel_data = array();
         // 设置样式
         $excel_obj->setStyle(array('id' => 's_title', 'Font' => array('FontName' => '宋体', 'Size' => '12', 'Bold' => '1')));
         // header
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '会员手机');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '会员姓名');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '单号');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '类型');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '金额');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '调整后金额');
-        $excel_data[0][] = array('styleid' => 's_title', 'data' => '时间');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '转赠人手机');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '转赠人');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '接收人手机');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '接收人');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '数量');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '转赠时间');
+        $excel_data[0][] = array('styleid' => 's_title', 'data' => '备注');
         foreach ((array)$data as $k => $v) {
             $tmp = array();
-            $tmp[] = array('data' => Model('member')->getMemberMobileById($v['elg_member_id']));
-            $tmp[] = array('data' => $v['elg_member_name']);
-            $tmp[] = array('data' => $v['elg_sn']);
-            $tmp[] = array('data' => str_replace(array('admin', 'consume', 'exchange'), array('管理调整', '消费', '兑换'), $v['elg_type']));
-            $tmp[] = array('data' => floatval($v['elg_amount']));
-            $tmp[] = array('data' => floatval($v['elg_equity_amount']));
-            $tmp[] = array('data' => $v['elg_addtime'] ? date('Y-m-d H:i:s', $v['elg_addtime']) : '');
+            $member = $model_member->getMemberInfoByID($v['member_id']);
+            $receiver = $model_member->getMemberInfoByID($v['invite_id']);
+            $tmp[] = array('data' =>$member['member_mobile']);
+            $tmp[] = array('data' => $member['member_name']);
+            $tmp[] = array('data' => $receiver['member_mobile']);
+            $tmp[] = array('data' => $receiver['member_name']);
+            $tmp[] = array('data' => abs($v['variable_integral']));
+            $tmp[] = array('data' => $v['add_time'] ? date('Y-m-d H:i:s', $v['add_time']) : '');
+            $tmp[] = array('data' => $v['remarks']);
             $excel_data[] = $tmp;
         }
         $excel_data = $excel_obj->charset($excel_data, CHARSET);
@@ -189,12 +124,21 @@ class equityControl extends SystemControl
                     foreach ($list as $v) {
                         $arr[] = $v['member_id'];
                     }
-                    $condition['elg_member_id'] = array('in', $arr);
+                    $condition['member_id'] = array('in', $arr);
                 } else {
-                    $condition['elg_member_id'] = null;
+                    $condition['member_id'] = null;
                 }
             } else {
-                $condition[$param['qtype']] = array('like', '%' . $param['query'] . '%');
+                $list = Model('member')->getMemberList(array('member_name' => array('like', '%' . $param['query'] . '%')));
+                if (!empty($list)) {
+                    $arr = array();
+                    foreach ($list as $v) {
+                        $arr[] = $v['member_id'];
+                    }
+                    $condition['member_id'] = array('in', $arr);
+                } else {
+                    $condition['member_id'] = null;
+                }
             }
         }
 

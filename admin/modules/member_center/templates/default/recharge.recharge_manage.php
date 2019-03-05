@@ -27,14 +27,16 @@ $(function() {
     $("#flexigrid").flexigrid({
         url: 'index.php?act=recharge&op=get_xml',
         colModel : [
-            {display: '操作', name: 'operation', width : 100, sortable : false, align: 'center', className: 'handle-s'},
-            {display: '会员手机', name: 'member_mobile', width : 120, sortable : false, align: 'center'},
-            {display: '真实姓名', name: 'rl_member_name', width : 120, sortable : false, align: 'center'},
-            {display: '单号', name: 'rl_recharge_type', width : 150, sortable : false, align: 'center'},
-            {display: '状态', name: 'rl_account_type', width : 100, sortable : false, align: 'center'},
-            {display: '数量', name: 'rl_amount', width : 100, sortable : false, align: 'center'},
-            {display: '挂卖时间', name: 'rl_addtime', width : 150, sortable : false, align: 'center'},
-            {display: '回购/拒绝时间', name: 'rl_paytime', width : 150, sortable : false, align: 'center'},
+            {display: '操作', name: 'operation', width : 150, sortable : false, align: 'center'},
+            {display: '单号', name: 'sell_sn', width : 150, sortable : false, align: 'center'},
+            {display: '会员手机', name: 'member_mobile', width : 100, sortable : false, align: 'center'},
+            {display: '真实姓名', name: 'member_name', width : 100, sortable : false, align: 'center'},
+            {display: '状态', name: 'state', width : 80, sortable : false, align: 'center'},
+            {display: '挂卖积分', name: 'sell_integral', width : 80, sortable : false, align: 'center'},
+            {display: '实际到市场积分', name: 'actual_integral', width : 80, sortable : false, align: 'center'},
+            {display: '挂卖时间', name: 'add_time', width : 120, sortable : false, align: 'center'},
+            {display: '回购时间', name: 'buy_time', width : 120, sortable : false, align: 'center'},
+            {display: '拒绝时间', name: 'refuse_time', width : 120, sortable : false, align: 'center'},
         ],
         buttons : [
             {display: '<i class="fa fa-file-excel-o"></i>导出数据', name : 'xls', bclass : 'xls', title : '将选定行数据导出execl文件', onpress : fg_operation }
@@ -42,7 +44,7 @@ $(function() {
         searchitems: [
             {display: '会员手机', name : 'member_mobile'},
             {display: '会员姓名', name: 'rl_member_name'},
-            {display: '充值单号', name: 'rl_sn'},
+            {display: '单号', name: 'sell_sn'},
         ],
         sortname: "total_consume",
         sortorder: "desc",
