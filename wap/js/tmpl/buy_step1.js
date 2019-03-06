@@ -534,14 +534,7 @@ $(function() {
                     buy_step2 = 0;
                     return false;
                 }
-                console.log(result)
                 location.href = WapSiteUrl + '/tmpl/payment.html?pay_sn='+result.datas.pay_info.pay_sn;
-                // if (result.datas.payment_code == 'offline') {
-                //     window.location.href = WapSiteUrl + '/tmpl/member/order_list.html';
-                // } else {
-                //     delCookie('cart_count');
-                //     toPay(result.datas.pay_sn, 'member_buy', 'pay');
-                // }
             }
         });
     });

@@ -315,7 +315,6 @@ class goodsModel extends Model {
     public function getGoodsCommonProductList($condition, $field = '*', $page = 10, $order = "goods_commonid desc", $limit = '') {
         $condition['goods_common.is_bd_product'] = 1;
         $res = $this->getGoodsInfoJoinGoodsCommon($condition);
-//        var_dump($res);die();
         return $res;
     }
 

@@ -21,17 +21,11 @@ class member_buyControl extends mobileMemberControl {
 	 */
 	public function buy_step1Op() {
 		$cart_id = explode(',', $_POST['cart_id']);
-
 		$logic_buy = logic('buy');
 
         //得到会员等级
-//        $model_member = Model('member');
-//        $member_info = $model_member->getMemberInfoByID($this->member_info['member_id']);
         $member_extend_model = Model('member_extend');
         $member_info = $member_extend_model->getMemberExtendInfo(array('member_id'=>$this->member_info['member_id']),'*','union');
-//		if (!$member_info['is_buy']) {
-//			responseApiJson(0, '', '您没有商品购买的权限,如有疑问请联系客服人员');
-//		}
 
         if (empty($_POST['ifcart'])) {
             $if_cart = $_GET['ifcart'];
@@ -52,8 +46,6 @@ class member_buyControl extends mobileMemberControl {
 		if (intval($_POST['address_id']) > 0) {
 			$result['address_info'] = Model('address')->getDefaultAddressInfo(array('address_id' => intval($_POST['address_id']), 'member_id' => $this->member_info['member_id']));
 		}
-
-		// die;
 		if ($result['address_info']) {
 			$data_area = $logic_buy->changeAddr($result['freight_list'], $result['address_info']['city_id'], $result['address_info']['area_id'], $this->member_info['member_id']);
 			if (!empty($data_area) && $data_area['state'] == 'success') {
@@ -66,7 +58,6 @@ class member_buyControl extends mobileMemberControl {
 				output_error('地区请求失败');
 			}
 		}
-
 		//整理数据
 		$store_cart_list = array();
 		$store_total_list = $result['store_goods_total_1'];
@@ -129,7 +120,6 @@ class member_buyControl extends mobileMemberControl {
 				unset($result['rpt_info']['rpacket_code']);
 			}
 		}
-//        $res = $member_discount * ncPriceFormat(array_sum($store_total_list) - $result['rpt_info']['rpacket_price']);
 		$buy_list['order_amount'] = ncPriceFormat(array_sum($store_total_list) - $result['rpt_info']['rpacket_price']);
 		$buy_list['rpt_info'] = $result['rpt_info'] ? $result['rpt_info'] : array();
 		$buy_list['address_api'] = $data_area ? $data_area : '';
@@ -151,35 +141,11 @@ class member_buyControl extends mobileMemberControl {
 		$param['ifcart'] = $_POST['ifcart'];
 		$param['cart_id'] = explode(',', $_POST['cart_id']);
 		$param['address_id'] = $_POST['address_id'];
-//		$param['vat_hash'] = $_POST['vat_hash'];
 		$param['offpay_hash'] = $_POST['offpay_hash'];
 		$param['offpay_hash_batch'] = $_POST['offpay_hash_batch'];
 		$param['pay_name'] = $_POST['pay_name'];
 		$param['invoice_id'] = $_POST['invoice_id'];
 		$param['rpt'] = $_POST['rpt'];
-
-//		//处理代金券
-//		$voucher = array();
-//		$post_voucher = explode(',', $_POST['voucher']);
-//		if (!empty($post_voucher)) {
-//			foreach ($post_voucher as $value) {
-//				list($voucher_t_id, $store_id, $voucher_price) = explode('|', $value);
-//				$voucher[$store_id] = $value;
-//			}
-//		}
-//		$param['voucher'] = $voucher;
-//
-//		$_POST['pay_message'] = trim($_POST['pay_message'], ',');
-//		$_POST['pay_message'] = explode(',', $_POST['pay_message']);
-//		$param['pay_message'] = array();
-//		if (is_array($_POST['pay_message']) && $_POST['pay_message']) {
-//			foreach ($_POST['pay_message'] as $v) {
-//				if (strpos($v, '|') !== false) {
-//					$v = explode('|', $v);
-//					$param['pay_message'][$v[0]] = $v[1];
-//				}
-//			}
-//		}
 		$param['pd_pay'] = $_POST['pd_pay'];
 		$param['rcb_pay'] = $_POST['rcb_pay'];
 		$param['password'] = $_POST['password'];
@@ -244,7 +210,6 @@ class member_buyControl extends mobileMemberControl {
 	 * 实物订单支付(新接口)
 	 */
 	public function payOp($pay_sn,$product_num) {
-//		$pay_sn = $_POST['pay_sn'];
 		if (!preg_match('/^\d{18}$/', $pay_sn)) {
 			output_error('该订单不存在');
 		}
@@ -379,7 +344,6 @@ class member_buyControl extends mobileMemberControl {
         $param['ifcart'] = $_POST['ifcart'];
         $param['cart_id'] = explode(',', $_POST['cart_id']);
         $param['address_id'] = $_POST['address_id'];
-//        $param['vat_hash'] = $_POST['vat_hash'];
         $param['offpay_hash'] = $_POST['offpay_hash'];
         $param['offpay_hash_batch'] = $_POST['offpay_hash_batch'];
         $param['pay_name'] = $_POST['pay_name'];
@@ -387,27 +351,27 @@ class member_buyControl extends mobileMemberControl {
         $param['rpt'] = $_POST['rpt'];
 
         //处理代金券
-                $voucher = array();
-                $post_voucher = explode(',', $_POST['voucher']);
-                if(!empty($post_voucher)) {
-                    foreach ($post_voucher as $value) {
-                        list($voucher_t_id, $store_id, $voucher_price) = explode('|', $value);
-                        $voucher[$store_id] = $value;
-                    }
-                }
-                $param['voucher'] = $voucher;
+        $voucher = array();
+        $post_voucher = explode(',', $_POST['voucher']);
+        if(!empty($post_voucher)) {
+            foreach ($post_voucher as $value) {
+                list($voucher_t_id, $store_id, $voucher_price) = explode('|', $value);
+                $voucher[$store_id] = $value;
+            }
+        }
+        $param['voucher'] = $voucher;
 
         $_POST['pay_message'] = trim($_POST['pay_message'],',');
-                $_POST['pay_message'] = explode(',',$_POST['pay_message']);
-                $param['pay_message'] = array();
-                if (is_array($_POST['pay_message']) && $_POST['pay_message']) {
-                    foreach ($_POST['pay_message'] as $v) {
-                        if (strpos($v, '|') !== false) {
-                            $v = explode('|', $v);
-                            $param['pay_message'][$v[0]] = $v[1];
-                        }
-                    }
+        $_POST['pay_message'] = explode(',',$_POST['pay_message']);
+        $param['pay_message'] = array();
+        if (is_array($_POST['pay_message']) && $_POST['pay_message']) {
+            foreach ($_POST['pay_message'] as $v) {
+                if (strpos($v, '|') !== false) {
+                    $v = explode('|', $v);
+                    $param['pay_message'][$v[0]] = $v[1];
                 }
+            }
+        }
         $param['pay_message'][1] = $_POST['buyer_message'];
         $param['pd_pay'] = $_POST['pd_pay'];
         $param['rcb_pay'] = $_POST['rcb_pay'];
@@ -425,14 +389,11 @@ class member_buyControl extends mobileMemberControl {
         if (!$result['state']) {
             output_error($result['msg']);
         }
-//        $result['data']['pay_sn']['is_bd_product'] = $result['data']['goods_list']['is_bd_product'];
         $result['data']['is_bd_product_num'] = 0;
         foreach ($result['data']['goods_list'] as $v){
             $result['data']['is_bd_product_num'] += ($v['goods_num'] * $v['is_bd_product']);
         }
         $result['data']['is_bd_product_num'] = (string) $result['data']['is_bd_product_num'];
-        //$order_info = current($result['data']['order_list']);
         $this->payOp($result['data']['pay_sn'],$result['data']['is_bd_product_num']);
-        //responseApiJson(1,'',array('pay_sn' => $result['data']['pay_sn'],'payment_code'=>$order_info['payment_code']));
     }
 }

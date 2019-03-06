@@ -158,10 +158,10 @@ class declaration_formModel extends Model {
      */
     public function getMenberDeclarationFromInfo($member_id,$type = 1){
         if ($type == 1){
-            $where = ' member_id = \''.$member_id.'\' and integral_end_time > \''.time().'\' and state = 1 ';
+            $where = ' member_id = \''.$member_id.'\' and integral_end_time > \''.time().'\'';
             $data =  $this->table('member_declaration')->where($where)->find();
         }else{
-            $where = ' inviter_id = \''.$member_id.'\' and integral_end_time > \''.time().'\' and state = 1 ';
+            $where = ' inviter_id = \''.$member_id.'\' and integral_end_time > \''.time().'\'';
             $data =  $this->table('member_declaration')->field('*,member_name as member_truename')->where($where)->select();
         }
         return $data;
@@ -231,6 +231,9 @@ class declaration_formModel extends Model {
      */
     public function changeMemberIntegral($member_id,$account_type,$operate_type,$amount,$info,$remarks,$type,$invite_id = 0)
     {
+        if (empty($info)){
+            $info = $this->getMenberDeclarationFromInfo($member_id);
+        }
         if ($operate_type == 2){
             if ($account_type == 1 && $info['m_integral']<$amount){
                 //会员积分不足

@@ -1193,7 +1193,7 @@ class BaseSellerControl extends Control {
 			'consult' => array('name' => '售后服务', 'child' => array(
 				array('name' => '咨询管理', 'act' => 'store_consult', 'op' => 'consult_list'),
 //				array('name' => '投诉管理', 'act' => 'store_complain', 'op' => 'list'),
-//				array('name' => '退款记录', 'act' => 'store_refund', 'op' => 'index'),
+				array('name' => '退款记录', 'act' => 'store_refund', 'op' => 'index'),
 //				array('name' => '退货记录', 'act' => 'store_return', 'op' => 'index'),
 			)),
 //			'statistics' => array('name' => '统计结算', 'child' => array(

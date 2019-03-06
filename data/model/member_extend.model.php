@@ -1241,15 +1241,14 @@ class member_extendModel extends Model {
 			$member_info['member_name'] = $register_info['username'];
 			$member_info['member_truename'] = $register_info['username'];
             $member_info['member_mobile'] = $register_info['member_mobile'];
-            $member_info['member_avatar'] = $register_info['member_avatar'];
 			$member_info['member_passwd'] = md5($register_info['password']);
+			$member_info['member_paypwd'] = md5($register_info['paypasswd']);
 			$member_info['member_time'] = $nowtime;
 			$member_info['member_login_time'] = $nowtime;
 			$member_info['member_old_login_time'] = $nowtime;
 			$member_info['member_login_ip'] = getIp();
 			$member_info['member_old_login_ip'] = getIp();
 			$member_info['member_mobile_bind'] = 1;
-			$member_info['member_level'] = $register_info['member_level'];
 			$insert_id = $this->addMemberInfo($member_info);
 			$member_info['member_id'] = $insert_id;
 			$info = $member_info;
@@ -2149,7 +2148,6 @@ class member_extendModel extends Model {
      */
     public function order_pay($data) {
        $member_info = $this->getMemberExtendInfo(['member_id'=>$data['member_id']],'*','union');
-       // $discount = Model('level')->getMemberDiscount($member_info['member_level']);
         try {
             $this->beginTransaction();
             $log_data = array();

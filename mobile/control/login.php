@@ -68,80 +68,32 @@ class loginControl extends mobileHomeControl {
 			array('input' => $_POST['captcha'], 'require' => "true", 'message' => "请输入验证码"),
 			array('input' => $_POST['passwd'], 'require' => "true", 'message' => "请输入密码"),
 			array('input' => $_POST['paypasswd'], 'require' => "true", 'message' => "请输入支付密码"),
-			array('input' => $_POST['invite'], 'require' => "true", 'message' => "请输入邀请人手机号"),
-			array('input' => $_POST['invite'], 'validator' => "mobile", 'message' => "邀请人手机号格式错误"),
-			array('input' => $_POST['access'], 'require' => "true", 'message' => "请输入接点人手机号"),
-			array('input' => $_POST['access'], 'validator' => "mobile", 'message' => "接点人手机号格式错误"),
-			array('input' => $_POST['bank_account_name'], 'require' => "true", 'message' => "请输入银行账户"),
-			array('input' => $_POST['bank_name'], 'require' => "true", 'message' => "请选择银行"),
-			array('input' => $_POST['bank_branch_name'], 'require' => "true", 'message' => "请输入银行支行"),
-			array('input' => $_POST['bank_account_num'], 'require' => "true", 'message' => "请输入银行卡号"),
-			array('input' => $_POST['bank_account_num'], 'validator' => "number", 'message' => "银行卡号格式错误"),
 		);
 		$error = $validate->validate();
 		if ($error != '') {
 			output_error($error);
 		}
 
+		//手机验证码
 		$result = Logic('connect_api')->checkSmsCaptcha($_POST['mobile'], $_POST['captcha'], 1);
 		if (!$result['state']) {
 			output_error($result['msg']);
 		}
 
-		$bank_id = $_POST['bank_name'];
-		$bank_info = Model('bank')->getBankInfo(array('bank_id' => $bank_id));
-		if (empty($bank_info)) {
-			output_error("银行信息错误");
-		}
 
 		$model_member_extend = Model('member_extend');
 		$info = $model_member_extend->getMemberExtendInfo(array('member_mobile' => $_POST['mobile']), '*', 'union');
 		if (!empty($info)) {
 			output_error("手机号已注册,请更换手机号注册");
 		}
-		$invite_info = $model_member_extend->getMemberExtendInfo(array('member_mobile' => $_POST['invite']), '*', 'union');
-		if (empty($invite_info)) {
-			output_error("邀请人未注册");
-		}
-		$access_info = $model_member_extend->getMemberExtendInfo(array('member_mobile' => $_POST['access']), '*', 'union');
-		if (empty($access_info)) {
-			output_error("接点人未注册");
-		}
 
-		// 判断接点人是否跟推荐人在同一区域
-		$access_arr = array();
-		$model_member_extend->getMemberAccessParentArr($access_info['member_id'], $access_arr);
-		if (!in_array($invite_info['member_id'], $access_arr)) {
-			output_error("接点人跟推荐人不在同一区域");
-		}
-
-		$count = $model_member_extend->getMemberAccessCount($access_info['member_id']);
-		if ($count >= 2) {
-			output_error("此接点人已接满,请更换接点人");
-		}
-
-		// $area_info = $model_member_extend->getMemberExtendInfo(array('access_id' => $access_info['member_id'], 'left_right_area' => $_POST['area']), '*', 'union');
-		// if (!empty($area_info)) {
-		// 	output_error("选择的区域已接人,请重新选择区域");
-		// }
 		$_POST['area'] = 0;
 		$register_data = array();
 		$register_data['username'] = trim($_POST['username']);
 		$register_data['member_mobile'] = trim($_POST['mobile']);
 		$register_data['password'] = trim($_POST['passwd']);
 		$register_data['paypasswd'] = trim($_POST['paypasswd']);
-		$register_data['inviter_id'] = $invite_info['member_id'];
-		$register_data['invite_one'] = $invite_info['member_id'];
-		$register_data['invite_two'] = $invite_info['invite_one'];
-		$register_data['invite_three'] = $invite_info['invite_two'];
 		$register_data['left_right_area'] = trim($_POST['area']);
-		$register_data['invite_id'] = $invite_info['member_id'];
-		$register_data['access_id'] = $access_info['member_id'];
-		$register_data['depth'] = $access_info['depth'] + 1;
-		$register_data['account_name'] = trim($_POST['bank_account_name']);
-		$register_data['account_bank_name'] = $bank_info['bank_name'];
-		$register_data['account_branch'] = trim($_POST['bank_branch_name']);
-		$register_data['account_num'] = trim($_POST['bank_account_num']);
 		$result = $model_member_extend->memberRegister($register_data, false, true);
 		if (isset($result['error'])) {
 			output_error($result['error']);

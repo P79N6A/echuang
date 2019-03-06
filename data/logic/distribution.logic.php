@@ -40,16 +40,16 @@ class distributionLogic
      * 关系绑定(添加报单)
      *
      * @param int $member_id 会员id
-     * @param int $inviteid 推荐人id
+     * @param int $invite_id 推荐人id
      * @param int $level 推荐人所在级别
-     * @param int $pay_id 支付表ID
+     * @param int $order_sn 订单号
      * @return bool
      */
-    public function setInviteId($member_id,$inviteid,$level,$pay_id)
+    public function setInviteId($member_id,$invite_id,$level,$order_sn)
     {
         $declaration_from_model = Model('declaration_from');
         $setting_model = Model('setting');
-        $superior_info = $declaration_from_model->getDeclarationFromInfo(' member_id = '.$inviteid.' and integral_start_time > '.time());
+        $superior_info = $declaration_from_model->getDeclarationFromInfo(' member_id = '.$invite_id.' and integral_start_time > '.time());
         if (empty($superior_info)){
             //推荐人没购买报单或以过期
             return false;
@@ -63,7 +63,7 @@ class distributionLogic
         $time = time();
         $data = array(
             'member_id'=>$member_id,
-            'inviter_id'=>$inviteid,
+            'inviter_id'=>$invite_id,
             'invite_one'=>$inviteid_one,
             'invite_two'=>$inviteid_array['invite_one'],
             'invite_three'=>$inviteid_array['invite_two'],
@@ -73,14 +73,12 @@ class distributionLogic
             'invite_seven'=>$inviteid_array['invite_six'],
             'integral'=>0,
             'estimate_integral'=>$this->getEstimateIntegral(),
-            //'integral_start_time'=>$time,
-            //'integral_end_time'=>$time+$setting['f_declaration_time']*86400,
             'cycle_time'=>$setting['f_cycle_time'],
             'deduction_integral'=>$setting['f_deduction_integral'],
             'superior_deduction_integral'=>$setting['f_superior_deduction_integral'],
             'declaration_time'=>$setting['f_declaration_time'],
             'state'=>0,
-            'order_sn'=>$this->makeOrderSn($pay_id),
+            'order_sn'=>$order_sn,
             'add_time'=>$time,
         );
         return $declaration_from_model->addDeclarationFrom($data);

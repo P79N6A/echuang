@@ -27,7 +27,7 @@ class mb_paymentControl extends SystemControl{
         $mb_payment_list = $model_mb_payment->getMbPaymentList();
         Tpl::output('mb_payment_list', $mb_payment_list);
         Tpl::setDirquna('mobile');
-Tpl::showpage('mb_payment.list');
+        Tpl::showpage('mb_payment.list');
     }
 
     /**
@@ -41,7 +41,7 @@ Tpl::showpage('mb_payment.list');
         $mb_payment_info = $model_mb_payment->getMbPaymentInfo(array('payment_id' => $payment_id));
         Tpl::output('payment', $mb_payment_info);
         Tpl::setDirquna('mobile');
-Tpl::showpage('mb_payment.edit');
+        Tpl::showpage('mb_payment.edit');
     }
 
     /**

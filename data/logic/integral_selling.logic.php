@@ -11,7 +11,7 @@ class integral_sellingLogic
      * @param int $member_id 会员id
      * @param float $integral 挂卖积分
      * @param int $state 订单状态
-     * @return bool
+     * @return array
      */
     public function makeIntegralSellingOrder($member_id,$integral,$state=1)
     {
@@ -24,23 +24,21 @@ class integral_sellingLogic
 
         $member_info = Model('member')->getMemberInfoByID($member_id);
         if ($member_info['member_level'] == 1){
-            if ($integral<$service_standard){
-                //挂卖积分小于标准
-                return false;
+            if ($integral<$service_standard && ($integral%$service_standard != 0)){
+                return array('error'=>'挂卖积分必须是'.$service_standard.'的倍数！');
             }
             $actual_integral = $integral - ($integral*$service_charge/100);
             $type = 0;
         }
         elseif($member_info['member_level'] == 2){
-            if ($integral<$vip_service_standard){
-                //挂卖积分小于标准
-                return false;
+            if ($integral<$vip_service_standard && ($integral%$vip_service_standard != 0)){
+                return array('error'=>'挂卖积分必须是'.$vip_service_standard.'的倍数！');
             }
             $actual_integral = $integral - ($integral*$vip_service_charge/100);
             $type = 1;
         }
         else{
-            return false;
+            return array('error'=>'普通用户不能挂卖积分!');
         }
 
         $data = array(
@@ -54,9 +52,9 @@ class integral_sellingLogic
         );
 
         if ($model_integral_selling->addIntegralSelling($data)){
-            return $data['sell_sn'];
+            return array('error'=>'','sell_sn'=>$data['sell_sn']);
         }else{
-            return false;
+            return array('error'=>'创建订单失败!');
         }
     }
 
@@ -64,24 +62,25 @@ class integral_sellingLogic
      * 积分挂卖
      * @param int $member_id  会员id
      * @param float $integral 挂卖积分
+     * @return array
      */
     public function sellIntegral($member_id,$integral)
     {
         Db::beginTransaction();
-        $sell_sn = $this->makeIntegralSellingOrder($member_id,$integral);
-        if ($sell_sn){
+        $return = $this->makeIntegralSellingOrder($member_id,$integral);
+        if (empty($return['error'])){
             $model_declaration_from = Model('declaration_form');
             $member_info = $model_declaration_from->getIntegralTotal($member_id,2);
-            $remakes = '挂卖积分，订单号：'.$sell_sn;
+            $remakes = '挂卖积分，订单号：'.$return['sell_sn'];
             if ($model_declaration_from->changeMemberIntegral($member_id,1,2,$integral,$member_info,$remakes,3)){
                 Db::commit();
-                return true;
+                return $return;
             }else{
                 Db::rollback();
-                return false;
+                return array('error'=>'扣除积分失败，请检查是否积分不足!');
             }
         }else{
-            return false;
+            return $return;
         }
     }
 
@@ -115,7 +114,7 @@ class integral_sellingLogic
                     return true;
                 }else{
                     Db::rollback();
-                    return false;
+                    return array('error'=>'回购失败');
                 }
             }
         }

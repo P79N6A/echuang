@@ -23,14 +23,9 @@ class member_indexControl extends mobileMemberControl {
 		$condition['buyer_id'] = $this->member_info['member_id'];
 		$condition['order_type'] = array('in', array(1, 3));
 		$condition['order_state'] = ORDER_STATE_NEW;
-		// dump($condition);
-		// die;
-		// dump(Model('order')->getOrderList($condition));
-		// die;
 		$member_info = array();
 		$member_info['user_name'] = $this->member_info['member_name'];
 		$member_info['avatar'] = getMemberAvatarForID($this->member_info['member_id']);
-
 		$member_gradeinfo = Model('member')->getOneMemberGrade(intval($this->member_info['member_exppoints']));
 		$member_info['level_name'] = $member_gradeinfo['level_name'];
 		$member_info['favorites_store'] = Model('favorites')->getStoreFavoritesCountByMemberId($this->member_info['member_id']);
@@ -41,16 +36,13 @@ class member_indexControl extends mobileMemberControl {
 		$member_info['order_noreceipt_count'] = $model_order->getOrderCountByID('buyer', $this->member_info['member_id'], 'SendCount');
 		$member_info['order_notakes_count'] = $model_order->getOrderCountByID('buyer', $this->member_info['member_id'], 'TakesCount');
 		$member_info['order_noeval_count'] = $model_order->getOrderCountByID('buyer', $this->member_info['member_id'], 'EvalCount');
-
 		// 售前退款
 		$condition = array();
 		$condition['buyer_id'] = $this->member_info['member_id'];
 		$condition['refund_state'] = array('lt', 3);
 		$member_info['return'] = Model('refund_return')->getRefundReturnCount($condition);
-
 		// 交易提醒
 		$model_order = Model('order');
-
 		$sql_order_nopay_count = "SELECT COUNT(*) as count from dfn_orders WHERE buyer_id='" . $this->member_info['member_id'] . "' and order_state=10";
 		$sql_order_noreceipt_count = "SELECT COUNT(*) as count from dfn_orders WHERE buyer_id='" . $this->member_info['member_id'] . "' and order_state=20";
 		$sql_order_notakes_count = "SELECT COUNT(*) as count from dfn_orders WHERE buyer_id='" . $this->member_info['member_id'] . "' and order_state=30";
@@ -59,13 +51,14 @@ class member_indexControl extends mobileMemberControl {
 		$order_noreceipt_count = $model_order->query($sql_order_noreceipt_count);
 		$order_notakes_count = $model_order->query($sql_order_notakes_count);
 		$order_order_noeval_count = $model_order->query($sql_order_noeval_count);
-		$member_info['order_nopay_count'] = $order_nopay_count[0]['count'];
-		$member_info['order_noreceipt_count'] = $order_noreceipt_count[0]['count'];
-		$member_info['order_notakes_count'] = $order_notakes_count[0]['count'];
-		$member_info['order_noeval_count'] = $order_order_noeval_count[0]['count'];
-		$member_level = Model('member_extend')->getMemberLevel($this->member_info['member_id']);
-        $member_info['member_level'] = str_replace(array(0,1,2,3,4,5),array("体验用户","VIP","店主","合伙人","高级合伙人","战略合伙人"),$member_level);
-		output_data(array('member_info' => $member_info));
+		$member_info['order_nopay_count'] = empty($order_nopay_count[0]['count'])?0:$order_nopay_count[0]['count'];
+		$member_info['order_noreceipt_count'] = empty($order_noreceipt_count[0]['count'])?0:$order_noreceipt_count[0]['count'];
+		$member_info['order_notakes_count'] = empty($order_notakes_count[0]['count'])?0:$order_notakes_count[0]['count'];
+		$member_info['order_noeval_count'] = empty($order_order_noeval_count[0]['count'])?0:$order_order_noeval_count[0]['count'];
+        $member_info['member_level'] = str_replace(array(0,1,2), array('普通用户','普通会员','创客VIP'),$this->member_info['member_level']);
+        $member_info['integral'] = $this->member_integral['m_integral'];
+        $member_info['estimate_integral'] = $this->member_integral['estimate_integral'];
+        output_data(array('member_info' => $member_info));
 	}
 
 	/**

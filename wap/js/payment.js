@@ -100,21 +100,6 @@ $(function() {
                                 location.href = ApiUrl + '/index.php?act=member_payment&op=wapPay&key=' + key + '&pay_sn=' + pay_sn + '&payment_code=' + payment_code;
                             }else{
                                 location.href = ApiUrl + '/index.php?act=member_payment&op=pay_new&key=' + key + '&pay_sn=' + pay_sn + '&payment_code=' + 'wxpay_jsapi';
-
-                                // $.ajax({
-                                //     type: 'get',
-                                //     url: ApiUrl + '/index.php?act=member_payment&op=wapPay&key=' + key + '&pay_sn=' + pay_sn + '&payment_code=' + payment_code,
-                                //     data: {
-                                //         key: key,
-                                //         pay_sn: pay_sn,
-                                //         payment_code: payment_code,
-                                //     },
-                                //     dataType: 'json',
-                                //     success: function (result) {
-                                //         console.log(result.datas);
-                                //         location.href = result.datas;
-                                //     }
-                                // })
                             }
                         }
 

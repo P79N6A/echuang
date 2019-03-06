@@ -2012,4 +2012,69 @@ class buy_1Logic
             }
         }
     }
+
+    public function integralPay($order_list, $input, $buyer_info)
+    {
+        $member_id = $buyer_info['member_id'];
+        $member_name = $buyer_info['member_name'];
+        $model_order = Model('order');
+        $model_member_extend = Model('member_extend');
+        $model_member = Model('member');
+        $integral = $model_member->getMemberInfoByID($member_id,'integral');
+        $integral = empty($integral)?0:floatval($integral['integral']);
+        foreach ($order_list as $key => $order_info) {
+            $order_amount = floatval($order_info['order_amount']);
+            $data_pay = array();
+            $data_pay['member_id'] = $member_id;
+            $data_pay['member_name'] = $member_name;
+            $data_pay['amount'] = $order_info['order_amount'];
+            $data_pay['order_sn'] = $order_info['order_sn'];
+            $data_pay['pay_sn'] = $order_info['pay_sn'];
+            $data_pay['product_num'] = $input['product_num'];
+            if ($integral >= $order_amount) {
+                Db::beginTransaction();
+                // 立即支付，订单支付完成
+                $result = $model_member_extend->order_pay($data_pay);
+                if (isset($result['error'])) {
+                    Db::rollback();
+                    throw new Exception('支付失败');
+                }
+                //记录订单日志(已付款)
+                $data = array();
+                $data['order_id'] = $order_info['order_id'];
+                $data['log_role'] = 'buyer';
+                $data['log_msg'] = '支付订单';
+                $data['log_orderstate'] = ORDER_STATE_PAY;
+                $insert = $model_order->addOrderLog($data);
+                if (!$insert) {
+                    Db::rollback();
+                    throw new Exception('记录订单积分支付日志出现错误');
+                }
+
+                //订单状态 置为已支付
+                $data_order = array();
+                $order_list[$key]['order_state'] = $data_order['order_state'] = ORDER_STATE_PAY;
+                $order_list[$key]['payment_time'] = $data_order['payment_time'] = TIMESTAMP;
+                $order_list[$key]['payment_code'] = $data_order['payment_code'] = 'integralpay';
+                $order_list[$key]['bean_amount'] = $data_order['bean_amount'] = $order_amount;
+                $result = $model_order->editOrder($data_order, array('order_id' => $order_info['order_id']));
+                if (!$result) {
+                    Db::rollback();
+                    throw new Exception('订单更新失败');
+                } else {
+                    $remarks = '支付订单：'.$order_info['order_sn'];
+                    $res = Model('declaration_form')->changeMemberIntegral($member_id,1,2,$order_amount,'',$remarks,2);
+                    if ($res){
+                        Db::commit();
+                        return true;
+                    }else{
+                        Db::rollback();
+                        return false;
+                    }
+                }
+            } else {
+                throw new Exception('可用积分不足');
+            }
+        }
+    }
 }

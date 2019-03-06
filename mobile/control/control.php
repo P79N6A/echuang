@@ -54,6 +54,7 @@ class mobileHomeControl extends mobileControl {
 class mobileMemberControl extends mobileControl {
 
 	protected $member_info = array();
+	protected $member_integral = array();
 
 	public function __construct() {
 		parent::__construct();
@@ -73,12 +74,13 @@ class mobileMemberControl extends mobileControl {
 			}
 
 			$model_member = Model('member');
-			// $this->member_info = $$model_member->getMemberInfoByID($mb_user_token_info['member_id']);
 			$this->member_info = Model('member_extend')->getMemberExtendInfo(array('me_member_id' => $mb_user_token_info['member_id']), '*', 'union');
 			if (empty($this->member_info)) {
 				output_error('请登录', array('login' => '0'));
 			} else {
-				$this->member_info['client_type'] = $mb_user_token_info['client_type'];
+                $member_integral = Model('declaration_form')->getIntegralTotal($mb_user_token_info['member_id'],2);
+                $this->member_integral = $member_integral;
+                $this->member_info['client_type'] = $mb_user_token_info['client_type'];
 				$this->member_info['openid'] = $mb_user_token_info['openid'];
 				$this->member_info['token'] = $mb_user_token_info['token'];
 				$level_name = $model_member->getOneMemberGrade($mb_user_token_info['member_id']);

@@ -237,24 +237,6 @@ class member_paymentControl extends mobileMemberControl {
 
 		if ($this->payment_code == 'wxpay_jsapi') {
             $this->wx_pay($order_pay_info);
-//			$param['orderSn'] = $order_pay_info['pay_sn'];
-//			$param['orderFee'] = (int) (ncPriceFormat(100 * $order_pay_info['api_pay_amount']));
-//			$param['orderInfo'] = $order_pay_info['pay_sn'] . '订单';
-//			$param['orderAttach'] = ($order_pay_info['order_type'] == 'real_order' ? 'r' : 'v');
-//			$api = new wxpay_jsapi();
-//			$api->setConfigs($param);
-//			try {
-//				echo $api->paymentHtml($this);
-//			} catch (Exception $ex) {
-//				if (C('debug')) {
-//					header('Content-type: text/plain; charset=utf-8');
-//					echo $ex, PHP_EOL;
-//				} else {
-//					Tpl::output('msg', $ex->getMessage());
-//					Tpl::showpage('payment_result');
-//				}
-//			}
-//			exit;
 		}
 
 		$param['order_sn'] = $order_pay_info['pay_sn'];
@@ -278,12 +260,8 @@ class member_paymentControl extends mobileMemberControl {
         );
 
         $pay_obj = new wxpay_wap($data);
-//		$pay_obj->setData($data);
         $response=$pay_obj->doPay();
         $redirect_url="http://shop.divona.xin/wap/tmpl/member/order_list.html";
-//		echo '<pre>';
-//		var_dump($response['mweb_url'].'&redirect_url='.urlencode($redirect_url));
-//		exit;
         header('Location:'.$response['mweb_url'].'&redirect_url='.urlencode($redirect_url));
     }
 
@@ -340,9 +318,21 @@ class member_paymentControl extends mobileMemberControl {
 					output_error($e->getMessage());
 				}
 			}elseif ($payment_code == 'balancepay') {
-                // 银豆支付
+                // 余额支付
                 try {
                     $result = Logic('buy_1')->balancePay($order_list, $post, $buyer_info);
+                    if ($result) {
+                        output_data(1);
+                    } else {
+                        output_error('支付失败');
+                    }
+                } catch (Exception $e) {
+                    output_error($e->getMessage());
+                }
+            }elseif ($payment_code == 'integralpay') {
+                // 积分支付
+                try {
+                    $result = Logic('buy_1')->integralPay($order_list, $post, $buyer_info);
                     if ($result) {
                         output_data(1);
                     } else {
@@ -374,8 +364,6 @@ class member_paymentControl extends mobileMemberControl {
                 $param['subject'] = $pay_info['data']['subject'];
                 $param['amount'] = $pay_info['data']['api_pay_amount'];
                 $data = $this->aaaOp($param);
-//                $string1 = "appid=".$data['appid']."&noncestr=".$data['noncestr']."&package=WAP&prepayid=".$data['prepayid']."&sign=".$data['sign']."&timestamp=".$data['timestamp']."";
-//                $string2 = "weixin://wap/pay?".urlencode($string1);
                 output_data($data);
             }
 		}
@@ -421,7 +409,9 @@ class member_paymentControl extends mobileMemberControl {
 		}
 
 		if ($pay_amount == 0) {
-			redirect(WAP_SITE_URL . '/tmpl/member/order_list.html');
+            return array('error' => '订单已支付');
+		    //接口不能重定向
+		    //redirect(WAP_SITE_URL . '/tmpl/member/order_list.html');
 		}
 
 		$result['data']['api_pay_amount'] = ncPriceFormat($pay_amount);
